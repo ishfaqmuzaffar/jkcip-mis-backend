@@ -22,7 +22,7 @@ async function bootstrap() {
     }),
   );
 
-  const port = configService.get<number>('PORT') || 3001;
+  const port = configService.get<number>('PORT') || 3002;
   await app.listen(port);
 
   console.log(`JKCIP MIS Backend running on http://localhost:${port}/api`);
