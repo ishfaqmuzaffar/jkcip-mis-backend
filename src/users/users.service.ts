@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { Prisma, UserRole, UserStatus } from '@prisma/client';
+import { UserRole, UserStatus } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -52,6 +52,21 @@ export class UsersService {
         createdAt: true,
       },
     });
+  }
+
+  async getSummary() {
+    const [roles, departments] = await Promise.all([
+      this.prisma.user.groupBy({ by: ['role'], _count: { role: true } }),
+      this.prisma.user.groupBy({ by: ['department'], _count: { department: true } }),
+    ]);
+
+    return {
+      roles: roles.map((item) => ({ role: item.role, count: item._count.role })),
+      departments: departments.map((item) => ({
+        department: item.department || 'Unassigned',
+        count: item._count.department,
+      })),
+    };
   }
 
   async findByEmail(email: string) {

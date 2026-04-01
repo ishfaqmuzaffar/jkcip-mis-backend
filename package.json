@@ -1,14 +1,22 @@
 {
   "name": "jkcip-mis-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "JKCIP MIS backend with dashboard, schemes, projects, beneficiaries, approvals and role-based access control.",
+  "main": "dist/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
-    "start:prod": "node dist/main.js"
+    "start": "node dist/main.js",
+    "start:prod": "node dist/main.js",
+    "prisma:generate": "node node_modules/prisma/build/index.js generate",
+    "prisma:push": "node node_modules/prisma/build/index.js db push",
+    "prepare:deploy": "npm run prisma:generate && npm run build"
   },
-  "keywords": [],
+  "keywords": [
+    "nestjs",
+    "prisma",
+    "jkcip",
+    "mis"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",

@@ -5,9 +5,10 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const allowedOrigins = [
+  const fixedOrigins = [
     'https://mis.jkcip.jk.gov.in',
     'http://72.60.28.22:8080',
+    'http://localhost:8080',
   ];
 
   app.enableCors({
@@ -16,11 +17,10 @@ async function bootstrap() {
         return callback(null, true);
       }
 
-      const isLocalhost =
-        origin.startsWith('http://localhost:') ||
-        origin.startsWith('http://127.0.0.1:');
+      const isLocalDevOrigin =
+        origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:');
 
-      if (allowedOrigins.includes(origin) || isLocalhost) {
+      if (fixedOrigins.includes(origin) || isLocalDevOrigin) {
         return callback(null, true);
       }
 
