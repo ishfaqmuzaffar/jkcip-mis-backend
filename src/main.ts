@@ -7,9 +7,6 @@ async function bootstrap() {
 
   const allowedOrigins = [
     'https://mis.jkcip.jk.gov.in',
-    'http://localhost:49569',
-    'http://localhost:8080',
-    'http://127.0.0.1:8080',
     'http://72.60.28.22:8080',
   ];
 
@@ -19,7 +16,11 @@ async function bootstrap() {
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      const isLocalhost =
+        origin.startsWith('http://localhost:') ||
+        origin.startsWith('http://127.0.0.1:');
+
+      if (allowedOrigins.includes(origin) || isLocalhost) {
         return callback(null, true);
       }
 
