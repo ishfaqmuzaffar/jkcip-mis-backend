@@ -21,4 +21,14 @@ export class DashboardController {
   getRecentActivity() {
     return this.dashboardService.getRecentActivity();
   }
+
+  @Get('district-performance')
+  getDistrictPerformance() {
+    return this.dashboardService.getDistrictPerformance();
+  }
+
+  @Get('quota-summary')
+  getQuotaSummary() {
+    return this.dashboardService.getQuotaSummary();
+  }
 }

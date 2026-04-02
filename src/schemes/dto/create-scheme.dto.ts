@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateSchemeDto {
@@ -15,8 +16,24 @@ export class CreateSchemeDto {
   department: string;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   budget?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  utilizedBudget?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  targetBeneficiaries?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  achievedBeneficiaries?: number;
 
   @IsOptional()
   @IsDateString()

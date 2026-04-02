@@ -15,6 +15,9 @@ export class SchemesService {
         description: createSchemeDto.description,
         department: createSchemeDto.department,
         budget: createSchemeDto.budget ?? 0,
+        utilizedBudget: createSchemeDto.utilizedBudget ?? 0,
+        targetBeneficiaries: createSchemeDto.targetBeneficiaries ?? 0,
+        achievedBeneficiaries: createSchemeDto.achievedBeneficiaries ?? 0,
         startDate: createSchemeDto.startDate ? new Date(createSchemeDto.startDate) : undefined,
         endDate: createSchemeDto.endDate ? new Date(createSchemeDto.endDate) : undefined,
         createdById,
@@ -49,9 +52,17 @@ export class SchemesService {
   }
 
   async getSummary() {
-    const [statusBreakdown, departmentBreakdown] = await Promise.all([
+    const [statusBreakdown, departmentBreakdown, financials] = await Promise.all([
       this.prisma.scheme.groupBy({ by: ['status'], _count: { status: true } }),
       this.prisma.scheme.groupBy({ by: ['department'], _count: { department: true } }),
+      this.prisma.scheme.aggregate({
+        _sum: {
+          budget: true,
+          utilizedBudget: true,
+          targetBeneficiaries: true,
+          achievedBeneficiaries: true,
+        },
+      }),
     ]);
 
     return {
@@ -63,6 +74,12 @@ export class SchemesService {
         department: item.department,
         count: item._count.department,
       })),
+      financials: {
+        totalBudget: financials._sum.budget ?? 0,
+        utilizedBudget: financials._sum.utilizedBudget ?? 0,
+        targetBeneficiaries: financials._sum.targetBeneficiaries ?? 0,
+        achievedBeneficiaries: financials._sum.achievedBeneficiaries ?? 0,
+      },
     };
   }
 }

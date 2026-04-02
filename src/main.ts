@@ -2,14 +2,24 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  const allowedOrigins = [
+function getAllowedOrigins(): string[] {
+  const staticOrigins = [
     'https://mis.jkcip.jk.gov.in',
     'http://72.60.28.22:8080',
     'http://72.60.28.22:8082',
   ];
+
+  const envOrigins = (process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  return [...new Set([...staticOrigins, ...envOrigins])];
+}
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  const allowedOrigins = getAllowedOrigins();
 
   app.enableCors({
     origin: (origin, callback) => {
@@ -33,17 +43,20 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('api');
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
       forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
 
-  await app.listen(3002, '0.0.0.0');
-  console.log('Backend running on http://0.0.0.0:3002/api');
+  const port = Number(process.env.PORT || 3002);
+  await app.listen(port, '0.0.0.0');
+  console.log(`Backend running on http://0.0.0.0:${port}/api`);
 }
 
 bootstrap();

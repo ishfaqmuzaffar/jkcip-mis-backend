@@ -13,8 +13,14 @@ export class BeneficiariesService {
         fullName: createBeneficiaryDto.fullName,
         referenceNumber: createBeneficiaryDto.referenceNumber,
         gender: createBeneficiaryDto.gender,
+        age: createBeneficiaryDto.age,
         district: createBeneficiaryDto.district,
         block: createBeneficiaryDto.block,
+        village: createBeneficiaryDto.village,
+        isYouth: createBeneficiaryDto.isYouth ?? false,
+        isWoman: createBeneficiaryDto.isWoman ?? false,
+        isBpl: createBeneficiaryDto.isBpl ?? false,
+        isGeneral: createBeneficiaryDto.isGeneral ?? false,
         phone: createBeneficiaryDto.phone,
         remarks: createBeneficiaryDto.remarks,
         sanctionedAmount: createBeneficiaryDto.sanctionedAmount ?? 0,
@@ -45,15 +51,25 @@ export class BeneficiariesService {
       data: {
         status,
         remarks,
-        approvedAt: status === BeneficiaryStatus.APPROVED || status === BeneficiaryStatus.SUPPORTED ? new Date() : undefined,
+        approvedAt:
+          status === BeneficiaryStatus.APPROVED || status === BeneficiaryStatus.SUPPORTED
+            ? new Date()
+            : undefined,
       },
     });
   }
 
   async getSummary() {
-    const [statusBreakdown, districtBreakdown] = await Promise.all([
+    const [statusBreakdown, districtBreakdown, categoryCounts, financials] = await Promise.all([
       this.prisma.beneficiary.groupBy({ by: ['status'], _count: { status: true } }),
       this.prisma.beneficiary.groupBy({ by: ['district'], _count: { district: true } }),
+      Promise.all([
+        this.prisma.beneficiary.count({ where: { isYouth: true } }),
+        this.prisma.beneficiary.count({ where: { isWoman: true } }),
+        this.prisma.beneficiary.count({ where: { isBpl: true } }),
+        this.prisma.beneficiary.count({ where: { isGeneral: true } }),
+      ]),
+      this.prisma.beneficiary.aggregate({ _sum: { sanctionedAmount: true } }),
     ]);
 
     return {
@@ -65,6 +81,13 @@ export class BeneficiariesService {
         district: item.district || 'Unknown',
         count: item._count.district,
       })),
+      categoryBreakdown: {
+        youth: categoryCounts[0],
+        women: categoryCounts[1],
+        bpl: categoryCounts[2],
+        general: categoryCounts[3],
+      },
+      totalSanctionedAmount: financials._sum.sanctionedAmount ?? 0,
     };
   }
 }

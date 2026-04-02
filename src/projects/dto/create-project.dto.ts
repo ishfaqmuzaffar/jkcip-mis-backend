@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDateString, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { PriorityLevel, ProjectStatus } from '@prisma/client';
 
@@ -16,6 +17,18 @@ export class CreateProjectDto {
   department: string;
 
   @IsOptional()
+  @IsString()
+  district?: string;
+
+  @IsOptional()
+  @IsString()
+  block?: string;
+
+  @IsOptional()
+  @IsString()
+  village?: string;
+
+  @IsOptional()
   @IsEnum(ProjectStatus)
   status?: ProjectStatus;
 
@@ -24,16 +37,44 @@ export class CreateProjectDto {
   priority?: PriorityLevel;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   budget?: number;
 
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  utilizedBudget?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  targetCount?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  achievedCount?: number;
+
+  @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   beneficiaryCount?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   schemeId?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  latitude?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  longitude?: number;
 
   @IsOptional()
   @IsDateString()

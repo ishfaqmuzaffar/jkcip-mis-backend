@@ -33,6 +33,13 @@ export class ProjectsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDto: UpdateProjectStatusDto,
   ) {
-    return this.projectsService.updateStatus(id, updateDto.status, updateDto.priority, updateDto.description);
+    return this.projectsService.updateStatus(
+      id,
+      updateDto.status,
+      updateDto.priority,
+      updateDto.description,
+      updateDto.utilizedBudget,
+      updateDto.achievedCount,
+    );
   }
 }

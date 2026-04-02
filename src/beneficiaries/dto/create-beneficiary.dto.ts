@@ -1,4 +1,5 @@
-import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsBoolean, IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateBeneficiaryDto {
   @IsString()
@@ -12,12 +13,37 @@ export class CreateBeneficiaryDto {
   gender?: string;
 
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  age?: number;
+
+  @IsOptional()
   @IsString()
   district?: string;
 
   @IsOptional()
   @IsString()
   block?: string;
+
+  @IsOptional()
+  @IsString()
+  village?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isYouth?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isWoman?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isBpl?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isGeneral?: boolean;
 
   @IsOptional()
   @IsString()
@@ -28,14 +54,17 @@ export class CreateBeneficiaryDto {
   remarks?: string;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   sanctionedAmount?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   schemeId?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   projectId?: number;
 
