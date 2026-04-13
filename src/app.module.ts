@@ -10,6 +10,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { BeneficiariesModule } from './beneficiaries/beneficiaries.module';
 import { ApprovalsModule } from './approvals/approvals.module';
 import { RolesGuard } from './common/roles.guard';
+import { LogframeModule } from './logframe/logframe.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RolesGuard } from './common/roles.guard';
     ProjectsModule,
     BeneficiariesModule,
     ApprovalsModule,
+    LogframeModule,
   ],
   providers: [
     PrismaService,

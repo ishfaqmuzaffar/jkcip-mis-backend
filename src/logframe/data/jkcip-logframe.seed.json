@@ -1,0 +1,3532 @@
+{
+  "nodes": [
+    {
+      "code": "outreach",
+      "title": "Outreach",
+      "level": "OUTREACH",
+      "description": null,
+      "parentCode": null,
+      "sortOrder": 1
+    },
+    {
+      "code": "project-goal",
+      "title": "Project Goal Contribute to the sustained increase in incomes of rural households by improving the competitiveness of the farming operations",
+      "level": "GOAL",
+      "description": null,
+      "parentCode": null,
+      "sortOrder": 2
+    },
+    {
+      "code": "development-objective",
+      "title": "Development Objective Improve the competitiveness of the famers through a value chain approach covering production, value addition of high value niche crops, spices and horticulture produce",
+      "level": "DEVELOPMENT_OBJECTIVE",
+      "description": null,
+      "parentCode": null,
+      "sortOrder": 3
+    },
+    {
+      "code": "outcome-1",
+      "title": "Outcome Outcome 1: Expansion and improved performance of Rural Producers' Organizations (FPOs)",
+      "level": "OUTCOME",
+      "description": null,
+      "parentCode": null,
+      "sortOrder": 4
+    },
+    {
+      "code": "output-1-1",
+      "title": "Output Output 1.1: Scaling up collectivization",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-1",
+      "sortOrder": 5
+    },
+    {
+      "code": "outcome-2",
+      "title": "Outcome Outcome 2: Enhanced productivity and production (niche and horticultural crops)",
+      "level": "OUTCOME",
+      "description": null,
+      "parentCode": null,
+      "sortOrder": 6
+    },
+    {
+      "code": "output-2-1",
+      "title": "Output Output 2.1: GAP training",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-2",
+      "sortOrder": 7
+    },
+    {
+      "code": "output-2-2",
+      "title": "Output Output 2.2: Access to inputs/technology packages",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-2",
+      "sortOrder": 8
+    },
+    {
+      "code": "output-2-3",
+      "title": "Output Output 2.3: Water management systems established",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-2",
+      "sortOrder": 9
+    },
+    {
+      "code": "output-2-4",
+      "title": "Output Output 2.4: Nurseries established",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-2",
+      "sortOrder": 10
+    },
+    {
+      "code": "outcome-3",
+      "title": "Outcome Outcome 3: Improved price realization of Agri and allied farmers",
+      "level": "OUTCOME",
+      "description": null,
+      "parentCode": null,
+      "sortOrder": 11
+    },
+    {
+      "code": "output-3-1",
+      "title": "Output Output 3.1: Enterprise promotion",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-3",
+      "sortOrder": 12
+    },
+    {
+      "code": "output-3-2",
+      "title": "Output Output 3.2: Market promotion",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-3",
+      "sortOrder": 13
+    },
+    {
+      "code": "output-3-3",
+      "title": "Output Output 3.3: Incubation and start-up",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-3",
+      "sortOrder": 14
+    },
+    {
+      "code": "outcome-4",
+      "title": "Outcome Outcome 4: Improved resilience of vulnerable groups",
+      "level": "OUTCOME",
+      "description": null,
+      "parentCode": null,
+      "sortOrder": 15
+    },
+    {
+      "code": "output-4-1",
+      "title": "Output Output: 4.1: Pastoralists support",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-4",
+      "sortOrder": 16
+    },
+    {
+      "code": "output-4-2",
+      "title": "Output Output 4.2: Support to other vulnerable groups",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-4",
+      "sortOrder": 17
+    },
+    {
+      "code": "outcome-5",
+      "title": "Outcome Outcome 5: Project Management systems strengthened",
+      "level": "OUTCOME",
+      "description": null,
+      "parentCode": null,
+      "sortOrder": 18
+    },
+    {
+      "code": "output-5-1",
+      "title": "Output Output 5.1: Policy engagement",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-5",
+      "sortOrder": 19
+    },
+    {
+      "code": "output-5-2",
+      "title": "Output Output 5.2: Staff training of staff of Agri and allied Directorates",
+      "level": "OUTPUT",
+      "description": null,
+      "parentCode": "outcome-5",
+      "sortOrder": 20
+    }
+  ],
+  "indicators": [
+    {
+      "code": "outreach-ind-001",
+      "name": "1 Persons reached by project-supported activities",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": []
+    },
+    {
+      "code": "outreach-ind-002",
+      "name": "Males - Males",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 79500.0,
+      "endTarget": 159000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 13529.0,
+          "cumulativeResult": 13529.0
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-003",
+      "name": "Females - Females",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 70500.0,
+      "endTarget": 141000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 2828.0,
+          "cumulativeResult": 2828.0
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-004",
+      "name": "Young - Young people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 45000.0,
+      "endTarget": 90000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-005",
+      "name": "Indigenous people - Indigenous people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 15000.0,
+      "endTarget": 30000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": true,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 4630.0,
+          "cumulativeResult": 4630.0
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-006",
+      "name": "Total number of persons receiving services - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 150000.0,
+      "endTarget": 300000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 16357.0,
+          "cumulativeResult": 16357.0
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-007",
+      "name": "Male - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 53.0,
+      "endTarget": 53.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 82.71076603289112,
+          "cumulativeResult": 82.71076603289112
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-008",
+      "name": "Female - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 47.0,
+      "endTarget": 47.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 17.289233967108885,
+          "cumulativeResult": 17.289233967108885
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-009",
+      "name": "Young - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 30.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 28.305924069205847,
+          "cumulativeResult": 28.305924069205847
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-010",
+      "name": "1.b Estimated corresponding total number of households members",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": []
+    },
+    {
+      "code": "outreach-ind-011",
+      "name": "Household members - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 765000.0,
+      "endTarget": 1530000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 83420.7,
+          "cumulativeResult": 83420.7
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-012",
+      "name": "1.a Corresponding number of households reached",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": []
+    },
+    {
+      "code": "outreach-ind-013",
+      "name": "Women-headed households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 13500.0,
+      "endTarget": 27000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-014",
+      "name": "Non-women-headed households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 136500.0,
+      "endTarget": 273000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outreach-ind-015",
+      "name": "Households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 150000.0,
+      "endTarget": 300000.0,
+      "frequency": "ANNUAL",
+      "source": "M&E data (Results Framework)",
+      "responsibility": "M&E and KM Manager",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outreach",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 16357.0,
+          "cumulativeResult": 16357.0
+        }
+      ]
+    },
+    {
+      "code": "project-goal-ind-016",
+      "name": "Households with more than 70 percent increase in income",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MID_TERM",
+      "source": "Household Level Baseline, Mid-term Review, Impact Study, and Project Completion Study",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "project-goal",
+      "progress": []
+    },
+    {
+      "code": "project-goal-ind-017",
+      "name": "Households - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 70.0,
+      "frequency": "MID_TERM",
+      "source": "Household Level Baseline, Mid-term Review, Impact Study, and Project Completion Study",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "project-goal",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "project-goal-ind-018",
+      "name": "CI 1.2.4 - Households with an increase in production by more than 30% (niche field crops and horticultural crops)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "project-goal",
+      "progress": []
+    },
+    {
+      "code": "project-goal-ind-019",
+      "name": "Household - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 70.0,
+      "frequency": "MID_TERM",
+      "source": "Household Level Baseline, Mid-term Review, Impact Study, and Project Completion Study",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "project-goal",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "project-goal-ind-020",
+      "name": "Households with an increase in productivity by more than15% - (niche field crops and horticultural crops)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "project-goal",
+      "progress": []
+    },
+    {
+      "code": "project-goal-ind-021",
+      "name": "Households - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 35.0,
+      "endTarget": 80.0,
+      "frequency": "MID_TERM",
+      "source": "Household Level Baseline, Mid-term Review, Impact Study, and Project Completion Study",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "project-goal",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-022",
+      "name": "Increase in productivity of crops, spices and horticultural produce",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": []
+    },
+    {
+      "code": "development-objective-ind-023",
+      "name": "Saffron Kg/ha - Number",
+      "description": null,
+      "unit": null,
+      "baseline": 4.0,
+      "midTarget": 4.5,
+      "endTarget": 5.5,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-024",
+      "name": "Kashmiri Chilli Kg/ha - Number",
+      "description": null,
+      "unit": null,
+      "baseline": 5000.0,
+      "midTarget": 6000.0,
+      "endTarget": 7500.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-025",
+      "name": "Apple (MT/Ha) - Number",
+      "description": null,
+      "unit": null,
+      "baseline": 12.0,
+      "midTarget": 14.0,
+      "endTarget": 16.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-026",
+      "name": "Walnut (MT/Ha) - Number",
+      "description": null,
+      "unit": null,
+      "baseline": 3.0,
+      "midTarget": 3.5,
+      "endTarget": 4.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-027",
+      "name": "Mango (MT/Ha) - Number",
+      "description": null,
+      "unit": null,
+      "baseline": 2.5,
+      "midTarget": 3.5,
+      "endTarget": 4.5,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-028",
+      "name": "Citrus (MT/Ha) - Number",
+      "description": null,
+      "unit": null,
+      "baseline": 2.5,
+      "midTarget": 3.5,
+      "endTarget": 4.5,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-029",
+      "name": "Stone fruits(MT/Ha) - Number",
+      "description": null,
+      "unit": null,
+      "baseline": 3.8,
+      "midTarget": 4.5,
+      "endTarget": 5.5,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-030",
+      "name": "Percentage of select niche and horticulture produce marketed as A grade/premium product",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": []
+    },
+    {
+      "code": "development-objective-ind-031",
+      "name": "Saffron (percentage) - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 70.0,
+      "endTarget": 95.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-032",
+      "name": "Vegetables (percentage) - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 50.0,
+      "endTarget": 65.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-033",
+      "name": "Kashmiri Chilli (percentage) - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 50.0,
+      "endTarget": 65.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-034",
+      "name": "Apple (percentage) - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": 40.0,
+      "midTarget": 45.0,
+      "endTarget": 60.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-035",
+      "name": "Stone fruits (percentage) - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": 30.0,
+      "midTarget": 35.0,
+      "endTarget": 45.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-036",
+      "name": "Mango (percentage) - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": 20.0,
+      "midTarget": 25.0,
+      "endTarget": 30.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "development-objective-ind-037",
+      "name": "Citrus (percentage) - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": 20.0,
+      "midTarget": 25.0,
+      "endTarget": 30.0,
+      "frequency": "MID_TERM",
+      "source": "Baseline survey, mid-term survey",
+      "responsibility": "PMU/ External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "development-objective",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-038",
+      "name": "2.2.1 Persons with new jobs/employment opportunities",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": []
+    },
+    {
+      "code": "outcome-1-ind-039",
+      "name": "Males - Males",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 1595.0,
+      "endTarget": 3190.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-040",
+      "name": "Females - Females",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 1415.0,
+      "endTarget": 2830.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-041",
+      "name": "Indigenous people - Indigenous people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 625.0,
+      "endTarget": 1250.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": true,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-042",
+      "name": "Young - Young people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 900.0,
+      "endTarget": 1805.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-043",
+      "name": "Total number of persons with new jobs/employment opportunities - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 3010.0,
+      "endTarget": 6020.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-044",
+      "name": "Persons with disabilities - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 36.0,
+      "endTarget": 72.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-045",
+      "name": "2.2.4 Supported rural producers\u2019 organizations providing new or improved services to their members",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": []
+    },
+    {
+      "code": "outcome-1-ind-046",
+      "name": "Number of POs - Organizations",
+      "description": null,
+      "unit": null,
+      "baseline": 56.0,
+      "midTarget": 70.0,
+      "endTarget": 101.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-047",
+      "name": "Total number of POs members - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": 16800.0,
+      "midTarget": 21000.0,
+      "endTarget": 30300.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-048",
+      "name": "Males POs members - Males",
+      "description": null,
+      "unit": null,
+      "baseline": 8904.0,
+      "midTarget": 11130.0,
+      "endTarget": 16059.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-049",
+      "name": "Females POs members - Females",
+      "description": null,
+      "unit": null,
+      "baseline": 7896.0,
+      "midTarget": 9870.0,
+      "endTarget": 14241.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-050",
+      "name": "Young POs members - Young people",
+      "description": null,
+      "unit": null,
+      "baseline": 5040.0,
+      "midTarget": 6300.0,
+      "endTarget": 9090.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-1-ind-051",
+      "name": "2.2.5 Rural producers\u2019 organizations reporting an increase in sales",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": []
+    },
+    {
+      "code": "outcome-1-ind-052",
+      "name": "Percentage of rural POs - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 70.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-1-1-ind-053",
+      "name": "No. of FPOs supported",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-1-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-1-1-ind-054",
+      "name": "Number - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 50.0,
+      "endTarget": 101.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-1-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 35.0,
+          "cumulativeResult": 35.0
+        }
+      ]
+    },
+    {
+      "code": "output-1-1-ind-055",
+      "name": "2.1.4 Supported rural producers that are members of a rural producers' organization",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-1-1",
+      "progress": []
+    },
+    {
+      "code": "output-1-1-ind-056",
+      "name": "Total number of persons - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 15000.0,
+      "endTarget": 30300.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-1-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-2-ind-057",
+      "name": "3.2.2 Households reporting adoption of environmentally sustainable and climate-resilient technologies and practices",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-2",
+      "progress": []
+    },
+    {
+      "code": "outcome-2-ind-058",
+      "name": "Total number of household members - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 4500.0,
+      "endTarget": 21210.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-2-ind-059",
+      "name": "Households - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 70.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-2-ind-060",
+      "name": "Households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 4500.0,
+      "endTarget": 21210.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-2-ind-061",
+      "name": "Area expansion under niche crops",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-2",
+      "progress": []
+    },
+    {
+      "code": "outcome-2-ind-062",
+      "name": "Hectares of land - Area (ha)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 1403.0,
+      "endTarget": 2805.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 333.0,
+          "cumulativeResult": 333.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-2-ind-063",
+      "name": "Area expansion under horticultural crops",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-2",
+      "progress": []
+    },
+    {
+      "code": "outcome-2-ind-064",
+      "name": "Hectares of land - Area (ha)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 773.0,
+      "endTarget": 1545.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 27.0,
+          "cumulativeResult": 27.0
+        }
+      ]
+    },
+    {
+      "code": "output-2-1-ind-065",
+      "name": "No. of farmers trained in GAP (niche and horticultural crops)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-1",
+      "progress": []
+    },
+    {
+      "code": "output-2-1-ind-066",
+      "name": "Farmers - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 16200.0,
+      "endTarget": 32400.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 3600.0,
+          "cumulativeResult": 3600.0
+        }
+      ]
+    },
+    {
+      "code": "output-2-2-ind-067",
+      "name": "1.1.3 Rural producers accessing production inputs and/or technological packages",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-2",
+      "progress": []
+    },
+    {
+      "code": "output-2-2-ind-068",
+      "name": "Males - Males",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 8029.0,
+      "endTarget": 16059.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-2-2-ind-069",
+      "name": "Females - Females",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 7121.0,
+      "endTarget": 14241.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-2-2-ind-070",
+      "name": "Young - Young people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 4545.0,
+      "endTarget": 9090.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-2-2-ind-071",
+      "name": "Total rural producers - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 15150.0,
+      "endTarget": 30300.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-2-2-ind-072",
+      "name": "3.1.4 Land brought under climate-resilient practices",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-2",
+      "progress": []
+    },
+    {
+      "code": "output-2-2-ind-073",
+      "name": "Hectares of land - Area (ha)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 773.0,
+      "endTarget": 1545.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 253.0,
+          "cumulativeResult": 253.0
+        }
+      ]
+    },
+    {
+      "code": "output-2-3-ind-074",
+      "name": "No. of water management systems established",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-3",
+      "progress": []
+    },
+    {
+      "code": "output-2-3-ind-075",
+      "name": "Water systems - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 675.0,
+      "endTarget": 1350.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-3",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 125.0,
+          "cumulativeResult": 125.0
+        }
+      ]
+    },
+    {
+      "code": "output-2-4-ind-076",
+      "name": "No. of Nurseries established",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-4",
+      "progress": []
+    },
+    {
+      "code": "output-2-4-ind-077",
+      "name": "Nurseries - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 160.0,
+      "endTarget": 320.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-2-4",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-3-ind-078",
+      "name": "Percentage of farmers reporting increase in farm gate prices",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-3",
+      "progress": []
+    },
+    {
+      "code": "outcome-3-ind-079",
+      "name": "Farmers - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 70.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-3",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-3-ind-080",
+      "name": "2.2.2 Supported rural enterprises reporting an increase in profit",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-3",
+      "progress": []
+    },
+    {
+      "code": "outcome-3-ind-081",
+      "name": "Percentage of enterprises - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 70.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-3",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-3-ind-082",
+      "name": "Percentage of supported enterprises benefiting from improved market linkages",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-3",
+      "progress": []
+    },
+    {
+      "code": "outcome-3-ind-083",
+      "name": "Enterprises - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 70.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-3",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-3-ind-084",
+      "name": "Percentage of start-ups supported with youth ownership",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-3",
+      "progress": []
+    },
+    {
+      "code": "outcome-3-ind-085",
+      "name": "Start-ups - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 60.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-3",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-1-ind-086",
+      "name": "Number of enterprises supported",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-1",
+      "progress": []
+    },
+    {
+      "code": "output-3-1-ind-087",
+      "name": "Enterprises - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 602.0,
+      "endTarget": 1204.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-1-ind-088",
+      "name": "2.1.2 Persons trained in income-generating activities or business management",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-1",
+      "progress": []
+    },
+    {
+      "code": "output-3-1-ind-089",
+      "name": "Males - Males",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 319.0,
+      "endTarget": 638.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-1-ind-090",
+      "name": "Females - Females",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 283.0,
+      "endTarget": 566.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": true,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-1-ind-091",
+      "name": "Young - Young people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 180.0,
+      "endTarget": 361.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-1-ind-092",
+      "name": "Persons trained in IGAs or BM (total) - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 602.0,
+      "endTarget": 1204.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-2-ind-093",
+      "name": "Number of MSP conducted",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-2",
+      "progress": []
+    },
+    {
+      "code": "output-3-2-ind-094",
+      "name": "MSP - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 6.0,
+      "endTarget": 12.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 2.0,
+          "cumulativeResult": 2.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-2-ind-095",
+      "name": "Number of Buyer-Seller meets conducted",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-2",
+      "progress": []
+    },
+    {
+      "code": "output-3-2-ind-096",
+      "name": "Meets - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 14.0,
+      "endTarget": 28.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 2.0,
+          "cumulativeResult": 2.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-3-ind-097",
+      "name": "Number of start-ups supported with seed funds",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-3",
+      "progress": []
+    },
+    {
+      "code": "output-3-3-ind-098",
+      "name": "Start-ups - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 175.0,
+      "endTarget": 350.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-3",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-3-3-ind-099",
+      "name": "Number of start-ups accessing scale up funds",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-3",
+      "progress": []
+    },
+    {
+      "code": "output-3-3-ind-100",
+      "name": "Start-ups - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 60.0,
+      "endTarget": 120.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-3-3",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-4-ind-101",
+      "name": "Percentage of pastoralists reporting improvements in wool prices",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-4",
+      "progress": []
+    },
+    {
+      "code": "outcome-4-ind-102",
+      "name": "Percentage - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 25.0,
+      "endTarget": 50.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-4",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-4-ind-103",
+      "name": "Percentage of vulnerable households reporting diversification of livelihood options",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-4",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-4-ind-104",
+      "name": "Percentage - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 15.0,
+      "endTarget": 30.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-4",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-4-ind-105",
+      "name": "Percentage of youth clubs participating in community action related environment",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-4",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-4-ind-106",
+      "name": "Percentage - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 30.0,
+      "endTarget": 60.0,
+      "frequency": "MONTHLY",
+      "source": "MIS, Baseline survey, mid-term survey and end-line survey",
+      "responsibility": "PMU/External agency",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-4",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-4-1-ind-107",
+      "name": "Percentage of pastoralists reporting improvements in wool price",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-4-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-4-1-ind-108",
+      "name": "Percentage - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 25.0,
+      "endTarget": 50.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-4-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-4-2-ind-109",
+      "name": "No. of persons from vulnerable community members supported for enterprise development",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-4-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-4-2-ind-110",
+      "name": "Number - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 625.0,
+      "endTarget": 1250.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-4-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-4-2-ind-111",
+      "name": "Number of youth clubs supported",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": true,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-4-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-4-2-ind-112",
+      "name": "Number - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 1300.0,
+      "endTarget": 2700.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-4-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-113",
+      "name": "SF.2.1 Households satisfied with project-supported services",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": []
+    },
+    {
+      "code": "outcome-5-ind-114",
+      "name": "Household members - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 52500.0,
+      "endTarget": 105000.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-115",
+      "name": "Indigenous households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 5250.0,
+      "endTarget": 21000.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": true,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-116",
+      "name": "Women-headed households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 4725.0,
+      "endTarget": 18900.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-117",
+      "name": "Households - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 35.0,
+      "endTarget": 70.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-118",
+      "name": "Households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 52500.0,
+      "endTarget": 105000.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-119",
+      "name": "SF.2.2 Households reporting they can influence decision-making of local authorities and project-supported service providers",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": []
+    },
+    {
+      "code": "outcome-5-ind-120",
+      "name": "Household members - Number of people",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 52500.0,
+      "endTarget": 105000.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-121",
+      "name": "Indigenous households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 5250.0,
+      "endTarget": 21000.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": true,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-122",
+      "name": "Women-headed households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 4725.0,
+      "endTarget": 18900.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-123",
+      "name": "Households - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 35.0,
+      "endTarget": 70.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "outcome-5-ind-124",
+      "name": "Households - Households",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 52500.0,
+      "endTarget": 105000.0,
+      "frequency": "ANNUAL",
+      "source": null,
+      "responsibility": null,
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": true,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "outcome-5",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-5-1-ind-125",
+      "name": "Policy studies conducted",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-5-1",
+      "progress": []
+    },
+    {
+      "code": "output-5-1-ind-126",
+      "name": "Studies - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 2.0,
+      "endTarget": 4.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-5-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-5-1-ind-127",
+      "name": "Policy workshops conducted",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-5-1",
+      "progress": []
+    },
+    {
+      "code": "output-5-1-ind-128",
+      "name": "Workshops - Number",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 2.0,
+      "endTarget": 4.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-5-1",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        }
+      ]
+    },
+    {
+      "code": "output-5-2-ind-129",
+      "name": "100 % recruitment of agreed human resources",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": null,
+      "endTarget": null,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-5-2",
+      "progress": []
+    },
+    {
+      "code": "output-5-2-ind-130",
+      "name": "Positions in place - Percentage (%)",
+      "description": null,
+      "unit": null,
+      "baseline": null,
+      "midTarget": 100.0,
+      "endTarget": 100.0,
+      "frequency": "MONTHLY",
+      "source": "MIS",
+      "responsibility": "PMU",
+      "active": true,
+      "supportsGenderBreakdown": false,
+      "supportsYouthBreakdown": false,
+      "supportsIndigenousBreakdown": false,
+      "supportsHouseholdBreakdown": false,
+      "supportsBlockBreakdown": false,
+      "logframeNodeCode": "output-5-2",
+      "progress": [
+        {
+          "reportYear": 2024,
+          "annualTarget": null,
+          "annualResult": 0.0,
+          "cumulativeResult": 0.0
+        },
+        {
+          "reportYear": 2025,
+          "annualTarget": null,
+          "annualResult": 26.0,
+          "cumulativeResult": 26.0
+        }
+      ]
+    }
+  ]
+}

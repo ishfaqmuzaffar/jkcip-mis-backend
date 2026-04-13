@@ -9,7 +9,8 @@
     "start:prod": "node dist/main.js",
     "prisma:generate": "node node_modules/prisma/build/index.js generate",
     "prisma:push": "node node_modules/prisma/build/index.js db push",
-    "prepare:deploy": "npm run prisma:generate && npm run build"
+    "prepare:deploy": "npm run prisma:generate && npm run build",
+    "seed:logframe": "node dist/scripts/seed-logframe.js"
   },
   "keywords": [
     "nestjs",

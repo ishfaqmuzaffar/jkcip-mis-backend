@@ -54,6 +54,29 @@ enum PriorityLevel {
   CRITICAL
 }
 
+
+
+enum LogframeLevel {
+  OUTREACH
+  GOAL
+  DEVELOPMENT_OBJECTIVE
+  OUTCOME
+  OUTPUT
+  SUB_OUTPUT
+  INDICATOR_GROUP
+}
+
+enum IndicatorFrequency {
+  MONTHLY
+  QUARTERLY
+  HALF_YEARLY
+  ANNUAL
+  BIENNIAL
+  MID_TERM
+  END_TERM
+  AD_HOC
+}
+
 model User {
   id                 Int          @id @default(autoincrement())
   fullName           String
@@ -69,6 +92,7 @@ model User {
   createdProjects    Project[]    @relation("ProjectCreatedBy")
   createdApprovals   Approval[]   @relation("ApprovalRequestedBy")
   reviewedApprovals  Approval[]   @relation("ApprovalReviewedBy")
+  verifiedIndicators IndicatorYearProgress[] @relation("IndicatorYearProgressVerifiedBy")
 }
 
 model Scheme {
@@ -186,4 +210,99 @@ model Approval {
   @@index([department])
   @@index([status])
   @@index([priority])
+}
+
+
+model LogframeNode {
+  id          Int            @id @default(autoincrement())
+  title       String
+  code        String         @unique
+  level       LogframeLevel
+  description String?
+  sortOrder   Int            @default(0)
+  active      Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  parentId    Int?
+  parent      LogframeNode?  @relation("LogframeNodeHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children    LogframeNode[] @relation("LogframeNodeHierarchy")
+  indicators  Indicator[]
+
+  @@index([level])
+  @@index([parentId])
+  @@index([sortOrder])
+}
+
+model Indicator {
+  id                         Int                     @id @default(autoincrement())
+  code                       String                  @unique
+  name                       String
+  description                String?
+  unit                       String?
+  baseline                   Float?
+  midTarget                  Float?
+  endTarget                  Float?
+  frequency                  IndicatorFrequency      @default(ANNUAL)
+  source                     String?
+  responsibility             String?
+  department                 String?
+  sector                     String?
+  crop                       String?
+  tags                       String[]
+  dimensionConfig            Json?
+  supportsDistrictBreakdown  Boolean                 @default(false)
+  supportsBlockBreakdown     Boolean                 @default(false)
+  supportsGenderBreakdown    Boolean                 @default(false)
+  supportsYouthBreakdown     Boolean                 @default(false)
+  supportsIndigenousBreakdown Boolean                @default(false)
+  supportsHouseholdBreakdown Boolean                 @default(false)
+  active                     Boolean                 @default(true)
+  createdAt                  DateTime                @default(now())
+  updatedAt                  DateTime                @updatedAt
+  logframeNodeId             Int
+  logframeNode               LogframeNode            @relation(fields: [logframeNodeId], references: [id], onDelete: Cascade)
+  yearlyProgress             IndicatorYearProgress[]
+
+  @@index([logframeNodeId])
+  @@index([department])
+  @@index([sector])
+  @@index([crop])
+  @@index([active])
+}
+
+model IndicatorYearProgress {
+  id                         Int       @id @default(autoincrement())
+  indicatorId                Int
+  reportYear                 Int
+  annualTarget               Float?
+  annualResult               Float?
+  cumulativeTarget           Float?
+  cumulativeResult           Float?
+  maleValue                  Float?
+  femaleValue                Float?
+  youthValue                 Float?
+  indigenousValue            Float?
+  householdValue             Float?
+  womenHeadedHouseholdValue  Float?
+  bplValue                   Float?
+  generalValue               Float?
+  district                   String?
+  block                      String?
+  village                    String?
+  dimensionValues            Json?
+  evidenceSource             String?
+  remarks                    String?
+  reportingMonth             Int?
+  lastReportedAt             DateTime?
+  verifiedAt                 DateTime?
+  verifiedById               Int?
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+  indicator                  Indicator @relation(fields: [indicatorId], references: [id], onDelete: Cascade)
+  verifiedBy                 User?     @relation("IndicatorYearProgressVerifiedBy", fields: [verifiedById], references: [id], onDelete: SetNull)
+
+  @@unique([indicatorId, reportYear, district, block, village], map: "indicatorId_reportYear_district_block_village")
+  @@index([reportYear])
+  @@index([district])
+  @@index([verifiedById])
 }
