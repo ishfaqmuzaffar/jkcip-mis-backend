@@ -103,10 +103,7 @@ export class LogframeController {
     return this.logframeService.upsertIndicatorProgress(id, dto, req.user?.userId);
   }
 
-
-
   @Post('import/preview')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DEPARTMENT_OFFICER)
   @UseInterceptors(FileInterceptor('file'))
   previewImport(@UploadedFile() file?: any) {
     if (!file) {
@@ -116,7 +113,6 @@ export class LogframeController {
   }
 
   @Post('import/commit')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DEPARTMENT_OFFICER)
   @UseInterceptors(FileInterceptor('file'))
   commitImport(@UploadedFile() file: any, @Body('mode') mode?: string) {
     if (!file) {
