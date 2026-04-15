@@ -336,10 +336,10 @@ export class LogframeService {
 
     for (const row of prepared.rows) {
       const node = await this.upsertImportNode(row, mode);
-      if (row.nodeAction == 'create') createdNodes += 1;
-      if (row.nodeAction == 'update') updatedNodes += 1;
+      if (row.nodeAction === 'create') createdNodes += 1;
+      if (row.nodeAction === 'update') updatedNodes += 1;
 
-      if (row.indicatorAction == 'skip') {
+      if (row.indicatorAction === 'skip') {
         skippedIndicators += 1;
         continue;
       }
@@ -521,7 +521,7 @@ export class LogframeService {
 
   private async prepareImport(fileBuffer: Buffer, fileName: string) {
     const parsedRows = this.parseImportWorkbook(fileBuffer, fileName);
-    if (parsedRows.length == 0) {
+    if (parsedRows.length === 0) {
       throw new BadRequestException('No importable rows were found in the uploaded file.');
     }
 
@@ -529,8 +529,8 @@ export class LogframeService {
     const indicatorCache = await this.buildIndicatorLookup();
 
     let rowNumber = 1;
-    const rows = [];
-    const previewRows = [];
+    const rows: any[] = [];
+    const previewRows: any[] = [];
     const summary = {
       totalRows: 0,
       validRows: 0,
@@ -556,18 +556,29 @@ export class LogframeService {
 
       const parent = row.parentNodeCode ? nodeCache.byCode.get(row.parentNodeCode) : null;
       const nodeKey = this.nodeUniqueKey(row.nodeCode, row.nodeTitle, row.level, parent?.id ?? null);
-      const existingNode = nodeCache.byCode.get(row.nodeCode) || nodeCache.byNaturalKey.get(nodeKey) || null;
+      const existingNode =
+        nodeCache.byCode.get(row.nodeCode) || nodeCache.byNaturalKey.get(nodeKey) || null;
 
       row.existingNodeId = existingNode?.id ?? null;
-      row.nodeAction = existingNode ? (this.nodeChanged(existingNode, row, parent?.id ?? null) ? 'update' : 'existing') : 'create';
+      row.nodeAction = existingNode
+        ? (this.nodeChanged(existingNode, row, parent?.id ?? null) ? 'update' : 'existing')
+        : 'create';
+
       if (row.nodeAction === 'create') summary.newNodes += 1;
       else if (row.nodeAction === 'update') summary.changedNodes += 1;
       else summary.existingNodes += 1;
 
-      const indicatorKey = this.indicatorUniqueKey(row.indicatorCode, row.indicatorName, existingNode?.id ?? -1, row.nodeTitle);
-      const existingIndicator = (row.indicatorCode ? indicatorCache.byCode.get(row.indicatorCode) : null)
-        || indicatorCache.byNaturalKey.get(indicatorKey)
-        || null;
+      const indicatorKey = this.indicatorUniqueKey(
+        row.indicatorCode,
+        row.indicatorName,
+        existingNode?.id ?? -1,
+        row.nodeTitle,
+      );
+
+      const existingIndicator =
+        (row.indicatorCode ? indicatorCache.byCode.get(row.indicatorCode) : null) ||
+        indicatorCache.byNaturalKey.get(indicatorKey) ||
+        null;
 
       row.existingIndicatorId = existingIndicator?.id ?? null;
       row.indicatorAction = existingIndicator
@@ -579,7 +590,6 @@ export class LogframeService {
       else summary.duplicateIndicators += 1;
 
       summary.validRows += 1;
-
       rows.push(row);
 
       previewRows.push({
@@ -588,13 +598,30 @@ export class LogframeService {
         node: { code: row.nodeCode, title: row.nodeTitle, action: row.nodeAction },
         indicator: { code: row.indicatorCode, name: row.indicatorName, action: row.indicatorAction },
         messages: [
-          row.nodeAction === 'create' ? 'New node will be created.' : row.nodeAction === 'update' ? 'Existing node will be updated.' : 'Node already exists.',
-          row.indicatorAction === 'create' ? 'New indicator will be created.' : row.indicatorAction === 'update' ? 'Existing indicator differs and can be updated.' : 'Duplicate indicator detected.',
+          row.nodeAction === 'create'
+            ? 'New node will be created.'
+            : row.nodeAction === 'update'
+              ? 'Existing node will be updated.'
+              : 'Node already exists.',
+          row.indicatorAction === 'create'
+            ? 'New indicator will be created.'
+            : row.indicatorAction === 'update'
+              ? 'Existing indicator differs and can be updated.'
+              : 'Duplicate indicator detected.',
         ],
       });
 
       if (!existingNode) {
-        const shadowNode = { id: -summary.totalRows, code: row.nodeCode, title: row.nodeTitle, level: row.level, description: row.nodeDescription ?? null, sortOrder: row.sortOrder ?? 0, active: row.active, parentId: parent?.id ?? null };
+        const shadowNode = {
+          id: -summary.totalRows,
+          code: row.nodeCode,
+          title: row.nodeTitle,
+          level: row.level,
+          description: row.nodeDescription ?? null,
+          sortOrder: row.sortOrder ?? 0,
+          active: row.active,
+          parentId: parent?.id ?? null,
+        };
         nodeCache.byCode.set(row.nodeCode, shadowNode);
         nodeCache.byNaturalKey.set(nodeKey, shadowNode);
       }
@@ -608,7 +635,7 @@ export class LogframeService {
       throw new BadRequestException('Only CSV files are supported.');
     }
 
-    const text = fileBuffer.toString('utf-8').replace(/^﻿/, '');
+    const text = fileBuffer.toString('utf-8').replace(/^\uFEFF/, '');
     const rows = this.parseCsvText(text);
 
     if (rows.length === 0) {
@@ -619,7 +646,9 @@ export class LogframeService {
   }
 
   private parseCsvText(text: string): Record<string, unknown>[] {
-    const lines = text.split('\n').filter(l => l.trim() !== '');
+    const lines = text
+      .split('\n')
+      .map((line) => line.replace(/\r$/, ''))
       .filter((line) => line.trim() !== '');
 
     if (lines.length === 0) {
@@ -673,7 +702,12 @@ export class LogframeService {
       for (const key of keys) {
         const normalized = this.normalizeHeader(key);
         for (const [rawKey, value] of Object.entries(raw)) {
-          if (this.normalizeHeader(rawKey) === normalized && value !== null && value !== undefined && String(value).trim() !== '') {
+          if (
+            this.normalizeHeader(rawKey) === normalized &&
+            value !== null &&
+            value !== undefined &&
+            String(value).trim() !== ''
+          ) {
             return value;
           }
         }
@@ -685,9 +719,12 @@ export class LogframeService {
     const nodeTitle = this.stringValue(read('node title', 'logframe node', 'node', 'outcome', 'results hierarchy'));
     const parentNodeCode = this.stringValue(read('parent node code', 'parent code', 'parent_node_code'));
     const parentNodeTitle = this.stringValue(read('parent node title', 'parent title', 'parent_node_title'));
-    const nodeCodeBase = this.stringValue(read('node code', 'logframe node code', 'outcome code')) || this.slug(nodeTitle);
+    const nodeCodeBase =
+      this.stringValue(read('node code', 'logframe node code', 'outcome code')) || this.slug(nodeTitle);
     const indicatorName = this.stringValue(read('indicator name', 'indicator', 'name'));
-    const indicatorCode = this.stringValue(read('indicator code', 'code', 'indicator_code')) || `${nodeCodeBase}-IND-${this.slug(indicatorName).slice(0, 24).toUpperCase()}`;
+    const indicatorCode =
+      this.stringValue(read('indicator code', 'code', 'indicator_code')) ||
+      `${nodeCodeBase}-IND-${this.slug(indicatorName).slice(0, 24).toUpperCase()}`;
 
     const row = {
       rowNumber,
@@ -740,10 +777,12 @@ export class LogframeService {
     const nodes = await this.prisma.logframeNode.findMany();
     const byCode = new Map<string, any>();
     const byNaturalKey = new Map<string, any>();
+
     for (const node of nodes) {
       byCode.set(node.code, node);
       byNaturalKey.set(this.nodeUniqueKey(node.code, node.title, node.level, node.parentId ?? null), node);
     }
+
     return { byCode, byNaturalKey };
   }
 
@@ -751,72 +790,92 @@ export class LogframeService {
     const indicators = await this.prisma.indicator.findMany();
     const byCode = new Map<string, any>();
     const byNaturalKey = new Map<string, any>();
+
     for (const indicator of indicators) {
       byCode.set(indicator.code, indicator);
-      byNaturalKey.set(this.indicatorUniqueKey(indicator.code, indicator.name, indicator.logframeNodeId, ''), indicator);
+      byNaturalKey.set(
+        this.indicatorUniqueKey(indicator.code, indicator.name, indicator.logframeNodeId, ''),
+        indicator,
+      );
     }
+
     return { byCode, byNaturalKey };
   }
 
-  private nodeUniqueKey(code: string | null, title: string | null, level: LogframeLevel | null, parentId: number | null) {
+  private nodeUniqueKey(
+    code: string | null,
+    title: string | null,
+    level: LogframeLevel | null,
+    parentId: number | null,
+  ) {
     return `${code ?? ''}::${this.slug(title)}::${level ?? ''}::${parentId ?? ''}`;
   }
 
-  private indicatorUniqueKey(code: string | null, name: string | null, nodeId: number | null, nodeTitle: string | null) {
+  private indicatorUniqueKey(
+    code: string | null,
+    name: string | null,
+    nodeId: number | null,
+    nodeTitle: string | null,
+  ) {
     return `${code ?? ''}::${this.slug(name)}::${nodeId ?? ''}::${this.slug(nodeTitle)}`;
   }
 
   private nodeChanged(existing: any, row: any, parentId: number | null) {
-    return existing.title !== row.nodeTitle
-      || existing.level !== row.level
-      || (existing.description ?? null) !== (row.nodeDescription ?? null)
-      || (existing.parentId ?? null) !== (parentId ?? null)
-      || (existing.sortOrder ?? 0) !== (row.sortOrder ?? 0)
-      || existing.active !== row.active;
+    return (
+      existing.title !== row.nodeTitle ||
+      existing.level !== row.level ||
+      (existing.description ?? null) !== (row.nodeDescription ?? null) ||
+      (existing.parentId ?? null) !== (parentId ?? null) ||
+      (existing.sortOrder ?? 0) !== (row.sortOrder ?? 0) ||
+      existing.active !== row.active
+    );
   }
 
   private indicatorChanged(existing: any, row: any, nodeId: number | null) {
     const tags = JSON.stringify(existing.tags ?? []);
     const rowTags = JSON.stringify(row.tags ?? []);
-    return existing.name !== row.indicatorName
-      || (existing.description ?? null) !== (row.description ?? null)
-      || (existing.unit ?? null) !== (row.unit ?? null)
-      || (existing.baseline ?? null) !== (row.baseline ?? null)
-      || (existing.midTarget ?? null) !== (row.midTarget ?? null)
-      || (existing.endTarget ?? null) !== (row.endTarget ?? null)
-      || existing.frequency !== row.frequency
-      || (existing.source ?? null) !== (row.source ?? null)
-      || (existing.responsibility ?? null) !== (row.responsibility ?? null)
-      || (existing.department ?? null) !== (row.department ?? null)
-      || (existing.sector ?? null) !== (row.sector ?? null)
-      || (existing.crop ?? null) !== (row.crop ?? null)
-      || tags !== rowTags
-      || JSON.stringify(existing.dimensionConfig ?? null) !== JSON.stringify(row.dimensionConfig ?? null)
-      || existing.supportsDistrictBreakdown !== row.supportsDistrictBreakdown
-      || existing.supportsBlockBreakdown !== row.supportsBlockBreakdown
-      || existing.supportsGenderBreakdown !== row.supportsGenderBreakdown
-      || existing.supportsYouthBreakdown !== row.supportsYouthBreakdown
-      || existing.supportsIndigenousBreakdown !== row.supportsIndigenousBreakdown
-      || existing.supportsHouseholdBreakdown !== row.supportsHouseholdBreakdown
-      || existing.active !== row.active
-      || (nodeId != null && existing.logframeNodeId !== nodeId);
+
+    return (
+      existing.name !== row.indicatorName ||
+      (existing.description ?? null) !== (row.description ?? null) ||
+      (existing.unit ?? null) !== (row.unit ?? null) ||
+      (existing.baseline ?? null) !== (row.baseline ?? null) ||
+      (existing.midTarget ?? null) !== (row.midTarget ?? null) ||
+      (existing.endTarget ?? null) !== (row.endTarget ?? null) ||
+      existing.frequency !== row.frequency ||
+      (existing.source ?? null) !== (row.source ?? null) ||
+      (existing.responsibility ?? null) !== (row.responsibility ?? null) ||
+      (existing.department ?? null) !== (row.department ?? null) ||
+      (existing.sector ?? null) !== (row.sector ?? null) ||
+      (existing.crop ?? null) !== (row.crop ?? null) ||
+      tags !== rowTags ||
+      JSON.stringify(existing.dimensionConfig ?? null) !== JSON.stringify(row.dimensionConfig ?? null) ||
+      existing.supportsDistrictBreakdown !== row.supportsDistrictBreakdown ||
+      existing.supportsBlockBreakdown !== row.supportsBlockBreakdown ||
+      existing.supportsGenderBreakdown !== row.supportsGenderBreakdown ||
+      existing.supportsYouthBreakdown !== row.supportsYouthBreakdown ||
+      existing.supportsIndigenousBreakdown !== row.supportsIndigenousBreakdown ||
+      existing.supportsHouseholdBreakdown !== row.supportsHouseholdBreakdown ||
+      existing.active !== row.active ||
+      (nodeId != null && existing.logframeNodeId !== nodeId)
+    );
   }
 
   private async upsertImportNode(row: any, mode: 'skip' | 'update') {
     let parentId: number | null = null;
+
     if (row.parentNodeCode) {
       const parent = await this.prisma.logframeNode.findFirst({
-        where: { OR: [{ code: row.parentNodeCode }, { title: row.parentNodeTitle ?? row.parentNodeCode }] },
+        where: {
+          OR: [{ code: row.parentNodeCode }, { title: row.parentNodeTitle ?? row.parentNodeCode }],
+        },
       });
       parentId = parent?.id ?? null;
     }
 
     const existing = await this.prisma.logframeNode.findFirst({
       where: {
-        OR: [
-          { code: row.nodeCode },
-          { title: row.nodeTitle, level: row.level, parentId },
-        ],
+        OR: [{ code: row.nodeCode }, { title: row.nodeTitle, level: row.level, parentId }],
       },
     });
 
@@ -851,7 +910,10 @@ export class LogframeService {
   }
 
   private normalizeHeader(value: string | null | undefined) {
-    return String(value ?? '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    return String(value ?? '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
   }
 
   private stringValue(value: unknown) {
@@ -877,7 +939,10 @@ export class LogframeService {
   private stringListValue(value: unknown) {
     const text = this.stringValue(value);
     if (!text) return [];
-    return text.split(',').map((item) => item.trim()).filter(Boolean);
+    return text
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
   }
 
   private jsonValue(value: unknown) {
@@ -908,7 +973,11 @@ export class LogframeService {
   }
 
   private parseLogframeLevel(value: unknown): LogframeLevel | null {
-    const text = String(value ?? '').trim().toUpperCase().replace(/[^A-Z]+/g, '_');
+    const text = String(value ?? '')
+      .trim()
+      .toUpperCase()
+      .replace(/[^A-Z]+/g, '_');
+
     const map: Record<string, LogframeLevel> = {
       OUTREACH: LogframeLevel.OUTREACH,
       GOAL: LogframeLevel.GOAL,
@@ -920,11 +989,16 @@ export class LogframeService {
       SUBOUTPUT: LogframeLevel.SUB_OUTPUT,
       INDICATOR_GROUP: LogframeLevel.INDICATOR_GROUP,
     };
+
     return map[text] ?? null;
   }
 
   private slug(value: string | null) {
-    return String(value ?? '').trim().toUpperCase().replace(/[^A-Z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return String(value ?? '')
+      .trim()
+      .toUpperCase()
+      .replace(/[^A-Z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   }
 
   private mapIndicatorData(dto: UpdateIndicatorDto): Prisma.IndicatorUpdateInput {
@@ -965,7 +1039,9 @@ export class LogframeService {
     };
   }
 
-  private decorateIndicator<T extends Indicator & { yearlyProgress?: any[]; logframeNode?: any }>(indicator: T) {
+  private decorateIndicator<T extends Indicator & { yearlyProgress?: any[]; logframeNode?: any }>(
+    indicator: T,
+  ) {
     const latest = this.pickLatestProgress(indicator.yearlyProgress ?? []);
     const target = latest?.annualTarget ?? latest?.cumulativeTarget ?? indicator.endTarget ?? 0;
     const actual = latest?.annualResult ?? latest?.cumulativeResult ?? 0;
@@ -1014,7 +1090,10 @@ export class LogframeService {
     return {
       ...totals,
       annualAchievementPercent: this.toPercent(totals.annualResult, totals.annualTarget),
-      cumulativeAchievementPercent: this.toPercent(totals.cumulativeResult, totals.cumulativeTarget),
+      cumulativeAchievementPercent: this.toPercent(
+        totals.cumulativeResult,
+        totals.cumulativeTarget,
+      ),
     };
   }
 
