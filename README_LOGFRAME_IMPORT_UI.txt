@@ -15,7 +15,6 @@ Upload field
 
 Supported file types
 - .csv
-- .xlsx
 
 Recommended columns
 - level

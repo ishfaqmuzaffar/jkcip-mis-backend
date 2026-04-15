@@ -110,7 +110,7 @@ export class LogframeController {
   @UseInterceptors(FileInterceptor('file'))
   previewImport(@UploadedFile() file?: any) {
     if (!file) {
-      throw new BadRequestException('Please upload a CSV or XLSX file.');
+      throw new BadRequestException('Please upload a CSV file.');
     }
     return this.logframeService.previewImport(file.buffer, file.originalname);
   }
@@ -120,7 +120,7 @@ export class LogframeController {
   @UseInterceptors(FileInterceptor('file'))
   commitImport(@UploadedFile() file: any, @Body('mode') mode?: string) {
     if (!file) {
-      throw new BadRequestException('Please upload a CSV or XLSX file.');
+      throw new BadRequestException('Please upload a CSV file.');
     }
     const normalizedMode = mode === 'update' ? 'update' : 'skip';
     return this.logframeService.commitImport(file.buffer, file.originalname, normalizedMode);

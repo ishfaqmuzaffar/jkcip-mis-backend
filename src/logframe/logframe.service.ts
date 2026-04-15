@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Indicator, IndicatorFrequency, LogframeLevel, Prisma } from '@prisma/client';
-import * as XLSX from 'xlsx';
 import { PrismaService } from '../prisma.service';
 import { CreateIndicatorDto } from './dto/create-indicator.dto';
 import { CreateLogframeNodeDto } from './dto/create-logframe-node.dto';
@@ -605,20 +604,70 @@ export class LogframeService {
   }
 
   private parseImportWorkbook(fileBuffer: Buffer, fileName: string) {
-    let workbook: XLSX.WorkBook;
-    try {
-      workbook = XLSX.read(fileBuffer, { type: 'buffer' });
-    } catch (error) {
-      throw new BadRequestException('Unable to read the uploaded file. Please upload a valid CSV or XLSX file.');
+    if (!fileName.toLowerCase().endsWith('.csv')) {
+      throw new BadRequestException('Only CSV files are supported.');
     }
 
-    const sheetName = workbook.SheetNames[0];
-    if (!sheetName) {
-      throw new BadRequestException('The uploaded file does not contain any worksheets.');
+    const text = fileBuffer.toString('utf-8').replace(/^﻿/, '');
+    const rows = this.parseCsvText(text);
+
+    if (rows.length === 0) {
+      throw new BadRequestException('The uploaded CSV file is empty.');
     }
 
-    const sheet = workbook.Sheets[sheetName];
-    return XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: null, raw: false });
+    return rows;
+  }
+
+  private parseCsvText(text: string): Record<string, unknown>[] {
+    const lines = text
+      .split(/?
+/)
+      .filter((line) => line.trim() !== '');
+
+    if (lines.length === 0) {
+      return [];
+    }
+
+    const headers = this.parseCsvLine(lines[0]).map((header) => header.trim());
+
+    return lines.slice(1).map((line) => {
+      const values = this.parseCsvLine(line);
+      const row: Record<string, unknown> = {};
+
+      headers.forEach((header, index) => {
+        row[header] = values[index] ?? null;
+      });
+
+      return row;
+    });
+  }
+
+  private parseCsvLine(line: string): string[] {
+    const result: string[] = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i += 1) {
+      const char = line[i];
+      const next = line[i + 1];
+
+      if (char === '"') {
+        if (inQuotes && next === '"') {
+          current += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        result.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+
+    result.push(current.trim());
+    return result;
   }
 
   private normalizeImportRow(raw: Record<string, unknown>, rowNumber: number) {
