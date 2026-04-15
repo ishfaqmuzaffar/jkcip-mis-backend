@@ -1,4 +1,5 @@
-import { IsBoolean, IsIn, IsInt, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
+import { LogframeLevel } from '@prisma/client';
 
 export class UpdateLogframeNodeDto {
   @IsOptional()
@@ -10,8 +11,8 @@ export class UpdateLogframeNodeDto {
   code?: string;
 
   @IsOptional()
-  @IsIn(['OUTREACH','GOAL','DEVELOPMENT_OBJECTIVE','OUTCOME','OUTPUT','SUB_OUTPUT','INDICATOR_GROUP'])
-  level?: string;
+  @IsEnum(LogframeLevel)
+  level?: LogframeLevel;
 
   @IsOptional()
   @IsString()

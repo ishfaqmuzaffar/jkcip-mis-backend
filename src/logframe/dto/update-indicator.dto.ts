@@ -1,5 +1,4 @@
-import { Type } from 'class-transformer';
-import { IsArray, IsBoolean, IsIn, IsInt, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, IsNumber, IsBoolean } from 'class-validator';
 
 export class UpdateIndicatorDto {
   @IsOptional()
@@ -11,10 +10,6 @@ export class UpdateIndicatorDto {
   name?: string;
 
   @IsOptional()
-  @IsInt()
-  logframeNodeId?: number;
-
-  @IsOptional()
   @IsString()
   description?: string;
 
@@ -23,22 +18,19 @@ export class UpdateIndicatorDto {
   unit?: string;
 
   @IsOptional()
-  @Type(() => Number)
   @IsNumber()
   baseline?: number;
 
   @IsOptional()
-  @Type(() => Number)
   @IsNumber()
   midTarget?: number;
 
   @IsOptional()
-  @Type(() => Number)
   @IsNumber()
   endTarget?: number;
 
   @IsOptional()
-  @IsIn(['MONTHLY','QUARTERLY','HALF_YEARLY','ANNUAL','BIENNIAL','MID_TERM','END_TERM','AD_HOC'])
+  @IsString()
   frequency?: string;
 
   @IsOptional()
@@ -50,33 +42,8 @@ export class UpdateIndicatorDto {
   responsibility?: string;
 
   @IsOptional()
-  @IsString()
-  department?: string;
-
-  @IsOptional()
-  @IsString()
-  sector?: string;
-
-  @IsOptional()
-  @IsString()
-  crop?: string;
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  tags?: string[];
-
-  @IsOptional()
-  @IsObject()
-  dimensionConfig?: Record<string, any>;
-
-  @IsOptional()
   @IsBoolean()
-  supportsDistrictBreakdown?: boolean;
-
-  @IsOptional()
-  @IsBoolean()
-  supportsBlockBreakdown?: boolean;
+  active?: boolean;
 
   @IsOptional()
   @IsBoolean()
@@ -96,5 +63,9 @@ export class UpdateIndicatorDto {
 
   @IsOptional()
   @IsBoolean()
-  active?: boolean;
+  supportsBlockBreakdown?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  logframeNodeId?: number;
 }

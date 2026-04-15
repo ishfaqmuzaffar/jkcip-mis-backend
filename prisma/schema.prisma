@@ -54,8 +54,6 @@ enum PriorityLevel {
   CRITICAL
 }
 
-
-
 enum LogframeLevel {
   OUTREACH
   GOAL
@@ -64,6 +62,12 @@ enum LogframeLevel {
   OUTPUT
   SUB_OUTPUT
   INDICATOR_GROUP
+}
+
+enum IndicatorDirection {
+  INCREASE
+  DECREASE
+  MAINTAIN
 }
 
 enum IndicatorFrequency {
@@ -78,75 +82,75 @@ enum IndicatorFrequency {
 }
 
 model User {
-  id                 Int          @id @default(autoincrement())
+  id                 Int                     @id @default(autoincrement())
   fullName           String
-  email              String       @unique
+  email              String                  @unique
   password           String
-  role               UserRole     @default(VIEWER)
-  status             UserStatus   @default(ACTIVE)
+  role               UserRole                @default(VIEWER)
+  status             UserStatus              @default(ACTIVE)
   department         String?
   phone              String?
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
-  createdSchemes     Scheme[]     @relation("SchemeCreatedBy")
-  createdProjects    Project[]    @relation("ProjectCreatedBy")
-  createdApprovals   Approval[]   @relation("ApprovalRequestedBy")
-  reviewedApprovals  Approval[]   @relation("ApprovalReviewedBy")
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
+  createdSchemes     Scheme[]                @relation("SchemeCreatedBy")
+  createdProjects    Project[]               @relation("ProjectCreatedBy")
+  createdApprovals   Approval[]              @relation("ApprovalRequestedBy")
+  reviewedApprovals  Approval[]              @relation("ApprovalReviewedBy")
   verifiedIndicators IndicatorYearProgress[] @relation("IndicatorYearProgressVerifiedBy")
 }
 
 model Scheme {
-  id                   Int          @id @default(autoincrement())
-  title                String
-  code                 String       @unique
-  description          String?
-  department           String
-  status               SchemeStatus @default(DRAFT)
-  budget               Float        @default(0)
-  utilizedBudget       Float        @default(0)
-  targetBeneficiaries  Int          @default(0)
-  achievedBeneficiaries Int         @default(0)
-  startDate            DateTime?
-  endDate              DateTime?
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
-  createdById          Int?
-  createdBy            User?        @relation("SchemeCreatedBy", fields: [createdById], references: [id])
-  projects             Project[]
-  beneficiaries        Beneficiary[]
+  id                    Int          @id @default(autoincrement())
+  title                 String
+  code                  String       @unique
+  description           String?
+  department            String
+  status                SchemeStatus @default(DRAFT)
+  budget                Float        @default(0)
+  utilizedBudget        Float        @default(0)
+  targetBeneficiaries   Int          @default(0)
+  achievedBeneficiaries Int          @default(0)
+  startDate             DateTime?
+  endDate               DateTime?
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  createdById           Int?
+  createdBy             User?        @relation("SchemeCreatedBy", fields: [createdById], references: [id])
+  projects              Project[]
+  beneficiaries         Beneficiary[]
 
   @@index([department])
   @@index([status])
 }
 
 model Project {
-  id                Int           @id @default(autoincrement())
-  name              String
-  code              String        @unique
-  description       String?
-  department        String
-  district          String?
-  block             String?
-  village           String?
-  status            ProjectStatus @default(PLANNED)
-  priority          PriorityLevel @default(MEDIUM)
-  budget            Float         @default(0)
-  utilizedBudget    Float         @default(0)
-  targetCount       Int           @default(0)
-  achievedCount     Int           @default(0)
-  beneficiaryCount  Int           @default(0)
-  latitude          Float?
-  longitude         Float?
-  startDate         DateTime?
-  endDate           DateTime?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  schemeId          Int?
-  createdById       Int?
-  scheme            Scheme?       @relation(fields: [schemeId], references: [id], onDelete: SetNull)
-  createdBy         User?         @relation("ProjectCreatedBy", fields: [createdById], references: [id])
-  beneficiaries     Beneficiary[]
-  approvals         Approval[]
+  id               Int           @id @default(autoincrement())
+  name             String
+  code             String        @unique
+  description      String?
+  department       String
+  district         String?
+  block            String?
+  village          String?
+  status           ProjectStatus @default(PLANNED)
+  priority         PriorityLevel @default(MEDIUM)
+  budget           Float         @default(0)
+  utilizedBudget   Float         @default(0)
+  targetCount      Int           @default(0)
+  achievedCount    Int           @default(0)
+  beneficiaryCount Int           @default(0)
+  latitude         Float?
+  longitude        Float?
+  startDate        DateTime?
+  endDate          DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  schemeId         Int?
+  createdById      Int?
+  scheme           Scheme?       @relation(fields: [schemeId], references: [id], onDelete: SetNull)
+  createdBy        User?         @relation("ProjectCreatedBy", fields: [createdById], references: [id])
+  beneficiaries    Beneficiary[]
+  approvals        Approval[]
 
   @@index([department])
   @@index([district])
@@ -155,29 +159,29 @@ model Project {
 }
 
 model Beneficiary {
-  id                Int               @id @default(autoincrement())
-  fullName          String
-  referenceNumber   String            @unique
-  gender            String?
-  age               Int?
-  district          String?
-  block             String?
-  village           String?
-  isYouth           Boolean           @default(false)
-  isWoman           Boolean           @default(false)
-  isBpl             Boolean           @default(false)
-  isGeneral         Boolean           @default(false)
-  status            BeneficiaryStatus @default(IDENTIFIED)
-  sanctionedAmount  Float             @default(0)
-  phone             String?
-  remarks           String?
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  schemeId          Int?
-  projectId         Int?
-  approvedAt        DateTime?
-  scheme            Scheme?           @relation(fields: [schemeId], references: [id], onDelete: SetNull)
-  project           Project?          @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  id               Int               @id @default(autoincrement())
+  fullName         String
+  referenceNumber  String            @unique
+  gender           String?
+  age              Int?
+  district         String?
+  block            String?
+  village          String?
+  isYouth          Boolean           @default(false)
+  isWoman          Boolean           @default(false)
+  isBpl            Boolean           @default(false)
+  isGeneral        Boolean           @default(false)
+  status           BeneficiaryStatus @default(IDENTIFIED)
+  sanctionedAmount Float             @default(0)
+  phone            String?
+  remarks          String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  schemeId         Int?
+  projectId        Int?
+  approvedAt       DateTime?
+  scheme           Scheme?           @relation(fields: [schemeId], references: [id], onDelete: SetNull)
+  project          Project?          @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
   @@index([district])
   @@index([status])
@@ -212,7 +216,6 @@ model Approval {
   @@index([priority])
 }
 
-
 model LogframeNode {
   id          Int            @id @default(autoincrement())
   title       String
@@ -234,34 +237,40 @@ model LogframeNode {
 }
 
 model Indicator {
-  id                         Int                     @id @default(autoincrement())
-  code                       String                  @unique
-  name                       String
-  description                String?
-  unit                       String?
-  baseline                   Float?
-  midTarget                  Float?
-  endTarget                  Float?
-  frequency                  IndicatorFrequency      @default(ANNUAL)
-  source                     String?
-  responsibility             String?
-  department                 String?
-  sector                     String?
-  crop                       String?
-  tags                       String[]
-  dimensionConfig            Json?
-  supportsDistrictBreakdown  Boolean                 @default(false)
-  supportsBlockBreakdown     Boolean                 @default(false)
-  supportsGenderBreakdown    Boolean                 @default(false)
-  supportsYouthBreakdown     Boolean                 @default(false)
-  supportsIndigenousBreakdown Boolean                @default(false)
-  supportsHouseholdBreakdown Boolean                 @default(false)
-  active                     Boolean                 @default(true)
-  createdAt                  DateTime                @default(now())
-  updatedAt                  DateTime                @updatedAt
-  logframeNodeId             Int
-  logframeNode               LogframeNode            @relation(fields: [logframeNodeId], references: [id], onDelete: Cascade)
-  yearlyProgress             IndicatorYearProgress[]
+  id                          Int                @id @default(autoincrement())
+  code                        String             @unique
+  name                        String
+  description                 String?
+  unit                        String?
+
+  baseline                    Float?
+  midTarget                   Float?
+  endTarget                   Float?
+
+  frequency                   IndicatorFrequency @default(ANNUAL)
+  source                      String?
+  responsibility              String?
+
+  department                  String?
+  sector                      String?
+  crop                        String?
+  tags                        String[]
+  dimensionConfig             Json?
+
+  supportsDistrictBreakdown   Boolean            @default(false)
+  supportsBlockBreakdown      Boolean            @default(false)
+  supportsGenderBreakdown     Boolean            @default(false)
+  supportsYouthBreakdown      Boolean            @default(false)
+  supportsIndigenousBreakdown Boolean            @default(false)
+  supportsHouseholdBreakdown  Boolean            @default(false)
+
+  active                      Boolean            @default(true)
+  createdAt                   DateTime           @default(now())
+  updatedAt                   DateTime           @updatedAt
+
+  logframeNodeId              Int
+  logframeNode                LogframeNode       @relation(fields: [logframeNodeId], references: [id], onDelete: Cascade)
+  yearlyProgress              IndicatorYearProgress[]
 
   @@index([logframeNodeId])
   @@index([department])
@@ -271,38 +280,38 @@ model Indicator {
 }
 
 model IndicatorYearProgress {
-  id                         Int       @id @default(autoincrement())
-  indicatorId                Int
-  reportYear                 Int
-  annualTarget               Float?
-  annualResult               Float?
-  cumulativeTarget           Float?
-  cumulativeResult           Float?
-  maleValue                  Float?
-  femaleValue                Float?
-  youthValue                 Float?
-  indigenousValue            Float?
-  householdValue             Float?
-  womenHeadedHouseholdValue  Float?
-  bplValue                   Float?
-  generalValue               Float?
-  district                   String?
-  block                      String?
-  village                    String?
-  dimensionValues            Json?
-  evidenceSource             String?
-  remarks                    String?
-  reportingMonth             Int?
-  lastReportedAt             DateTime?
-  verifiedAt                 DateTime?
-  verifiedById               Int?
-  createdAt                  DateTime  @default(now())
-  updatedAt                  DateTime  @updatedAt
-  indicator                  Indicator @relation(fields: [indicatorId], references: [id], onDelete: Cascade)
-  verifiedBy                 User?     @relation("IndicatorYearProgressVerifiedBy", fields: [verifiedById], references: [id], onDelete: SetNull)
+  id                          Int       @id @default(autoincrement())
+  reportYear                  Int
+  annualTarget                Float?
+  annualResult                Float?
+  cumulativeTarget            Float?
+  cumulativeResult            Float?
+  maleValue                   Float?
+  femaleValue                 Float?
+  youthValue                  Float?
+  indigenousValue             Float?
+  householdValue              Float?
+  womenHeadedHouseholdValue   Float?
+  bplValue                    Float?
+  generalValue                Float?
+  district                    String?
+  block                       String?
+  village                     String?
+  dimensionValues             Json?
+  evidenceSource              String?
+  remarks                     String?
+  reportingMonth              Int?
+  lastReportedAt              DateTime?
+  verifiedAt                  DateTime?
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
+  indicatorId                 Int
+  verifiedById                Int?
+  indicator                   Indicator @relation(fields: [indicatorId], references: [id], onDelete: Cascade)
+  verifiedBy                  User?     @relation("IndicatorYearProgressVerifiedBy", fields: [verifiedById], references: [id], onDelete: SetNull)
 
-  @@unique([indicatorId, reportYear, district, block, village], map: "indicatorId_reportYear_district_block_village")
+  @@unique([indicatorId, reportYear, district, block, village])
+  @@index([indicatorId])
   @@index([reportYear])
   @@index([district])
-  @@index([verifiedById])
 }

@@ -1,5 +1,14 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsInt,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class UpsertIndicatorProgressDto {
   @IsInt()
@@ -91,9 +100,11 @@ export class UpsertIndicatorProgressDto {
 
   @IsOptional()
   @IsInt()
+  @Min(1)
+  @Max(12)
   reportingMonth?: number;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   lastReportedAt?: string;
 }

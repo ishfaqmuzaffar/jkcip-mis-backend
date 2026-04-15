@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -8,8 +9,13 @@ import {
   Post,
   Query,
   Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../common/roles.decorator';
 import { CreateIndicatorDto } from './dto/create-indicator.dto';
 import { CreateLogframeNodeDto } from './dto/create-logframe-node.dto';
@@ -19,6 +25,7 @@ import { UpsertIndicatorProgressDto } from './dto/upsert-indicator-progress.dto'
 import { LogframeService } from './logframe.service';
 
 @Controller('logframe')
+@UseGuards(JwtAuthGuard)
 export class LogframeController {
   constructor(private readonly logframeService: LogframeService) {}
 
@@ -79,7 +86,10 @@ export class LogframeController {
   }
 
   @Get('indicators/:id/progress')
-  getIndicatorProgress(@Param('id', ParseIntPipe) id: number, @Query('year') year?: string) {
+  getIndicatorProgress(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('year') year?: string,
+  ) {
     return this.logframeService.getIndicatorProgress(id, year ? Number(year) : undefined);
   }
 
@@ -91,6 +101,29 @@ export class LogframeController {
     @Req() req: any,
   ) {
     return this.logframeService.upsertIndicatorProgress(id, dto, req.user?.userId);
+  }
+
+
+
+  @Post('import/preview')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DEPARTMENT_OFFICER)
+  @UseInterceptors(FileInterceptor('file'))
+  previewImport(@UploadedFile() file?: any) {
+    if (!file) {
+      throw new BadRequestException('Please upload a CSV or XLSX file.');
+    }
+    return this.logframeService.previewImport(file.buffer, file.originalname);
+  }
+
+  @Post('import/commit')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DEPARTMENT_OFFICER)
+  @UseInterceptors(FileInterceptor('file'))
+  commitImport(@UploadedFile() file: any, @Body('mode') mode?: string) {
+    if (!file) {
+      throw new BadRequestException('Please upload a CSV or XLSX file.');
+    }
+    const normalizedMode = mode === 'update' ? 'update' : 'skip';
+    return this.logframeService.commitImport(file.buffer, file.originalname, normalizedMode);
   }
 
   @Get('dashboard/summary')

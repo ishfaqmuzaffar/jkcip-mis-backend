@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Indicator, IndicatorFrequency, LogframeLevel, Prisma } from '@prisma/client';
+import * as XLSX from 'xlsx';
 import { PrismaService } from '../prisma.service';
 import { CreateIndicatorDto } from './dto/create-indicator.dto';
 import { CreateLogframeNodeDto } from './dto/create-logframe-node.dto';
@@ -12,7 +13,7 @@ export class LogframeService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getTree() {
-    const nodes = await (this.prisma as any).logframeNode.findMany({
+    const nodes = await this.prisma.logframeNode.findMany({
       orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
       include: {
         indicators: {
@@ -46,7 +47,7 @@ export class LogframeService {
   }
 
   async getNodes() {
-    return (this.prisma as any).logframeNode.findMany({
+    return this.prisma.logframeNode.findMany({
       orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
       include: {
         parent: { select: { id: true, title: true, code: true, level: true } },
@@ -56,7 +57,7 @@ export class LogframeService {
   }
 
   async createNode(dto: CreateLogframeNodeDto) {
-    return (this.prisma as any).logframeNode.create({
+    return this.prisma.logframeNode.create({
       data: {
         title: dto.title,
         code: dto.code,
@@ -74,7 +75,8 @@ export class LogframeService {
 
   async updateNode(id: number, dto: UpdateLogframeNodeDto) {
     await this.ensureNodeExists(id);
-    return (this.prisma as any).logframeNode.update({
+
+    return this.prisma.logframeNode.update({
       where: { id },
       data: {
         title: dto.title,
@@ -98,7 +100,7 @@ export class LogframeService {
     crop?: string;
     year?: number;
   }) {
-    const indicators = await (this.prisma as any).indicator.findMany({
+    const indicators = await this.prisma.indicator.findMany({
       where: {
         ...(filters.nodeId ? { logframeNodeId: filters.nodeId } : {}),
         ...(filters.department ? { department: filters.department } : {}),
@@ -121,7 +123,7 @@ export class LogframeService {
   }
 
   async getIndicator(id: number) {
-    const indicator = await (this.prisma as any).indicator.findUnique({
+    const indicator = await this.prisma.indicator.findUnique({
       where: { id },
       include: {
         logframeNode: {
@@ -150,8 +152,28 @@ export class LogframeService {
   async createIndicator(dto: CreateIndicatorDto) {
     await this.ensureNodeExists(dto.logframeNodeId);
 
-    const indicator = await (this.prisma as any).indicator.create({
-      data: this.mapIndicatorData(dto),
+    const indicator = await this.prisma.indicator.create({
+      data: {
+        code: dto.code,
+        name: dto.name,
+        description: dto.description,
+        unit: dto.unit,
+        baseline: dto.baseline,
+        midTarget: dto.midTarget,
+        endTarget: dto.endTarget,
+        frequency: dto.frequency as IndicatorFrequency,
+        source: dto.source,
+        responsibility: dto.responsibility,
+        active: dto.active ?? true,
+        supportsGenderBreakdown: dto.supportsGenderBreakdown ?? false,
+        supportsYouthBreakdown: dto.supportsYouthBreakdown ?? false,
+        supportsIndigenousBreakdown: dto.supportsIndigenousBreakdown ?? false,
+        supportsHouseholdBreakdown: dto.supportsHouseholdBreakdown ?? false,
+        supportsBlockBreakdown: dto.supportsBlockBreakdown ?? false,
+        logframeNode: {
+          connect: { id: dto.logframeNodeId },
+        },
+      },
       include: {
         logframeNode: {
           select: { id: true, title: true, code: true, level: true },
@@ -167,11 +189,12 @@ export class LogframeService {
 
   async updateIndicator(id: number, dto: UpdateIndicatorDto) {
     await this.ensureIndicatorExists(id);
+
     if (dto.logframeNodeId !== undefined) {
       await this.ensureNodeExists(dto.logframeNodeId);
     }
 
-    const indicator = await (this.prisma as any).indicator.update({
+    const indicator = await this.prisma.indicator.update({
       where: { id },
       data: this.mapIndicatorData(dto),
       include: {
@@ -190,7 +213,7 @@ export class LogframeService {
   async getIndicatorProgress(indicatorId: number, year?: number) {
     await this.ensureIndicatorExists(indicatorId);
 
-    const rows = await (this.prisma as any).indicatorYearProgress.findMany({
+    const rows = await this.prisma.indicatorYearProgress.findMany({
       where: {
         indicatorId,
         ...(year ? { reportYear: year } : {}),
@@ -223,7 +246,7 @@ export class LogframeService {
       },
     } as const;
 
-    const row = await (this.prisma as any).indicatorYearProgress.upsert({
+    const row = await this.prisma.indicatorYearProgress.upsert({
       where,
       create: {
         indicatorId,
@@ -282,7 +305,7 @@ export class LogframeService {
       },
     });
 
-    const indicator = await (this.prisma as any).indicator.findUnique({
+    const indicator = await this.prisma.indicator.findUnique({
       where: { id: indicatorId },
       include: { yearlyProgress: { orderBy: { reportYear: 'asc' } } },
     });
@@ -290,6 +313,115 @@ export class LogframeService {
     return {
       row,
       aggregated: this.aggregateProgressRows(indicator?.yearlyProgress ?? []),
+    };
+  }
+
+  async previewImport(fileBuffer: Buffer, fileName: string) {
+    const prepared = await this.prepareImport(fileBuffer, fileName);
+    return {
+      fileName,
+      summary: prepared.summary,
+      rows: prepared.previewRows.slice(0, 200),
+      note: prepared.previewRows.length > 200 ? 'Preview truncated to first 200 rows.' : null,
+    };
+  }
+
+  async commitImport(fileBuffer: Buffer, fileName: string, mode: 'skip' | 'update' = 'skip') {
+    const prepared = await this.prepareImport(fileBuffer, fileName);
+
+    let createdNodes = 0;
+    let updatedNodes = 0;
+    let createdIndicators = 0;
+    let updatedIndicators = 0;
+    let skippedIndicators = 0;
+
+    for (const row of prepared.rows) {
+      const node = await this.upsertImportNode(row, mode);
+      if (row.nodeAction == 'create') createdNodes += 1;
+      if (row.nodeAction == 'update') updatedNodes += 1;
+
+      if (row.indicatorAction == 'skip') {
+        skippedIndicators += 1;
+        continue;
+      }
+
+      const indicatorPayload: Prisma.IndicatorUncheckedCreateInput = {
+        code: row.indicatorCode,
+        name: row.indicatorName,
+        description: row.description,
+        unit: row.unit,
+        baseline: row.baseline,
+        midTarget: row.midTarget,
+        endTarget: row.endTarget,
+        frequency: row.frequency,
+        source: row.source,
+        responsibility: row.responsibility,
+        department: row.department,
+        sector: row.sector,
+        crop: row.crop,
+        tags: row.tags,
+        dimensionConfig: row.dimensionConfig as Prisma.InputJsonValue | undefined,
+        supportsDistrictBreakdown: row.supportsDistrictBreakdown,
+        supportsBlockBreakdown: row.supportsBlockBreakdown,
+        supportsGenderBreakdown: row.supportsGenderBreakdown,
+        supportsYouthBreakdown: row.supportsYouthBreakdown,
+        supportsIndigenousBreakdown: row.supportsIndigenousBreakdown,
+        supportsHouseholdBreakdown: row.supportsHouseholdBreakdown,
+        active: row.active,
+        logframeNodeId: node.id,
+      };
+
+      if (row.existingIndicatorId) {
+        if (mode === 'update' && row.indicatorAction === 'update') {
+          await this.prisma.indicator.update({
+            where: { id: row.existingIndicatorId },
+            data: {
+              code: row.indicatorCode,
+              name: row.indicatorName,
+              description: row.description,
+              unit: row.unit,
+              baseline: row.baseline,
+              midTarget: row.midTarget,
+              endTarget: row.endTarget,
+              frequency: row.frequency,
+              source: row.source,
+              responsibility: row.responsibility,
+              department: row.department,
+              sector: row.sector,
+              crop: row.crop,
+              tags: row.tags,
+              dimensionConfig: row.dimensionConfig as Prisma.InputJsonValue | undefined,
+              supportsDistrictBreakdown: row.supportsDistrictBreakdown,
+              supportsBlockBreakdown: row.supportsBlockBreakdown,
+              supportsGenderBreakdown: row.supportsGenderBreakdown,
+              supportsYouthBreakdown: row.supportsYouthBreakdown,
+              supportsIndigenousBreakdown: row.supportsIndigenousBreakdown,
+              supportsHouseholdBreakdown: row.supportsHouseholdBreakdown,
+              active: row.active,
+              logframeNodeId: node.id,
+            },
+          });
+          updatedIndicators += 1;
+        } else {
+          skippedIndicators += 1;
+        }
+      } else {
+        await this.prisma.indicator.create({ data: indicatorPayload });
+        createdIndicators += 1;
+      }
+    }
+
+    return {
+      fileName,
+      mode,
+      summary: prepared.summary,
+      committed: {
+        createdNodes,
+        updatedNodes,
+        createdIndicators,
+        updatedIndicators,
+        skippedIndicators,
+      },
     };
   }
 
@@ -303,13 +435,13 @@ export class LogframeService {
       : {};
 
     const [totalNodes, totalIndicators, activeIndicators, progressRows, indicators] = await Promise.all([
-      (this.prisma as any).logframeNode.count(),
-      (this.prisma as any).indicator.count(),
-      (this.prisma as any).indicator.count({ where: { active: true } }),
-      (this.prisma as any).indicatorYearProgress.findMany({
+      this.prisma.logframeNode.count(),
+      this.prisma.indicator.count(),
+      this.prisma.indicator.count({ where: { active: true } }),
+      this.prisma.indicatorYearProgress.findMany({
         where: year ? { reportYear: year } : undefined,
       }),
-      (this.prisma as any).indicator.findMany({
+      this.prisma.indicator.findMany({
         where: indicatorWhere,
         include: {
           logframeNode: { select: { id: true, title: true, code: true, level: true } },
@@ -341,8 +473,8 @@ export class LogframeService {
   }
 
   async getOutcomePerformance(year?: number) {
-    const outcomes = await (this.prisma as any).logframeNode.findMany({
-      where: { level: 'OUTCOME' as any },
+    const outcomes = await this.prisma.logframeNode.findMany({
+      where: { level: LogframeLevel.OUTCOME },
       orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
       include: {
         indicators: {
@@ -388,8 +520,368 @@ export class LogframeService {
     });
   }
 
-  private mapIndicatorData(dto: CreateIndicatorDto | UpdateIndicatorDto): any {
-    const base = {
+  private async prepareImport(fileBuffer: Buffer, fileName: string) {
+    const parsedRows = this.parseImportWorkbook(fileBuffer, fileName);
+    if (parsedRows.length == 0) {
+      throw new BadRequestException('No importable rows were found in the uploaded file.');
+    }
+
+    const nodeCache = await this.buildNodeLookup();
+    const indicatorCache = await this.buildIndicatorLookup();
+
+    let rowNumber = 1;
+    const rows = [];
+    const previewRows = [];
+    const summary = {
+      totalRows: 0,
+      validRows: 0,
+      invalidRows: 0,
+      newNodes: 0,
+      existingNodes: 0,
+      changedNodes: 0,
+      newIndicators: 0,
+      duplicateIndicators: 0,
+      changedIndicators: 0,
+    };
+
+    for (const raw of parsedRows) {
+      rowNumber += 1;
+      summary.totalRows += 1;
+
+      const row = this.normalizeImportRow(raw, rowNumber);
+      if (row.errors.length > 0) {
+        summary.invalidRows += 1;
+        previewRows.push({ rowNumber, status: 'invalid', errors: row.errors, raw });
+        continue;
+      }
+
+      const parent = row.parentNodeCode ? nodeCache.byCode.get(row.parentNodeCode) : null;
+      const nodeKey = this.nodeUniqueKey(row.nodeCode, row.nodeTitle, row.level, parent?.id ?? null);
+      const existingNode = nodeCache.byCode.get(row.nodeCode) || nodeCache.byNaturalKey.get(nodeKey) || null;
+
+      row.existingNodeId = existingNode?.id ?? null;
+      row.nodeAction = existingNode ? (this.nodeChanged(existingNode, row, parent?.id ?? null) ? 'update' : 'existing') : 'create';
+      if (row.nodeAction === 'create') summary.newNodes += 1;
+      else if (row.nodeAction === 'update') summary.changedNodes += 1;
+      else summary.existingNodes += 1;
+
+      const indicatorKey = this.indicatorUniqueKey(row.indicatorCode, row.indicatorName, existingNode?.id ?? -1, row.nodeTitle);
+      const existingIndicator = (row.indicatorCode ? indicatorCache.byCode.get(row.indicatorCode) : null)
+        || indicatorCache.byNaturalKey.get(indicatorKey)
+        || null;
+
+      row.existingIndicatorId = existingIndicator?.id ?? null;
+      row.indicatorAction = existingIndicator
+        ? (this.indicatorChanged(existingIndicator, row, existingNode?.id ?? null) ? 'update' : 'skip')
+        : 'create';
+
+      if (row.indicatorAction === 'create') summary.newIndicators += 1;
+      else if (row.indicatorAction === 'update') summary.changedIndicators += 1;
+      else summary.duplicateIndicators += 1;
+
+      summary.validRows += 1;
+
+      rows.push(row);
+
+      previewRows.push({
+        rowNumber,
+        status: row.indicatorAction === 'create' ? 'new' : row.indicatorAction === 'update' ? 'changed' : 'duplicate',
+        node: { code: row.nodeCode, title: row.nodeTitle, action: row.nodeAction },
+        indicator: { code: row.indicatorCode, name: row.indicatorName, action: row.indicatorAction },
+        messages: [
+          row.nodeAction === 'create' ? 'New node will be created.' : row.nodeAction === 'update' ? 'Existing node will be updated.' : 'Node already exists.',
+          row.indicatorAction === 'create' ? 'New indicator will be created.' : row.indicatorAction === 'update' ? 'Existing indicator differs and can be updated.' : 'Duplicate indicator detected.',
+        ],
+      });
+
+      if (!existingNode) {
+        const shadowNode = { id: -summary.totalRows, code: row.nodeCode, title: row.nodeTitle, level: row.level, description: row.nodeDescription ?? null, sortOrder: row.sortOrder ?? 0, active: row.active, parentId: parent?.id ?? null };
+        nodeCache.byCode.set(row.nodeCode, shadowNode);
+        nodeCache.byNaturalKey.set(nodeKey, shadowNode);
+      }
+    }
+
+    return { rows, previewRows, summary };
+  }
+
+  private parseImportWorkbook(fileBuffer: Buffer, fileName: string) {
+    let workbook: XLSX.WorkBook;
+    try {
+      workbook = XLSX.read(fileBuffer, { type: 'buffer' });
+    } catch (error) {
+      throw new BadRequestException('Unable to read the uploaded file. Please upload a valid CSV or XLSX file.');
+    }
+
+    const sheetName = workbook.SheetNames[0];
+    if (!sheetName) {
+      throw new BadRequestException('The uploaded file does not contain any worksheets.');
+    }
+
+    const sheet = workbook.Sheets[sheetName];
+    return XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: null, raw: false });
+  }
+
+  private normalizeImportRow(raw: Record<string, unknown>, rowNumber: number) {
+    const read = (...keys: string[]) => {
+      for (const key of keys) {
+        const normalized = this.normalizeHeader(key);
+        for (const [rawKey, value] of Object.entries(raw)) {
+          if (this.normalizeHeader(rawKey) === normalized && value !== null && value !== undefined && String(value).trim() !== '') {
+            return value;
+          }
+        }
+      }
+      return null;
+    };
+
+    const level = this.parseLogframeLevel(read('level', 'logframe level', 'node level', 'results level'));
+    const nodeTitle = this.stringValue(read('node title', 'logframe node', 'node', 'outcome', 'results hierarchy'));
+    const parentNodeCode = this.stringValue(read('parent node code', 'parent code', 'parent_node_code'));
+    const parentNodeTitle = this.stringValue(read('parent node title', 'parent title', 'parent_node_title'));
+    const nodeCodeBase = this.stringValue(read('node code', 'logframe node code', 'outcome code')) || this.slug(nodeTitle);
+    const indicatorName = this.stringValue(read('indicator name', 'indicator', 'name'));
+    const indicatorCode = this.stringValue(read('indicator code', 'code', 'indicator_code')) || `${nodeCodeBase}-IND-${this.slug(indicatorName).slice(0, 24).toUpperCase()}`;
+
+    const row = {
+      rowNumber,
+      errors: [] as string[],
+      level,
+      nodeCode: nodeCodeBase,
+      nodeTitle,
+      nodeDescription: this.stringValue(read('node description', 'outcome description', 'description')),
+      parentNodeCode,
+      parentNodeTitle,
+      sortOrder: this.numberValue(read('sort order', 'sort_order')) ?? 0,
+      indicatorCode,
+      indicatorName,
+      description: this.stringValue(read('indicator description', 'definition', 'description')),
+      unit: this.stringValue(read('unit', 'unit of measure', 'measurement unit')),
+      baseline: this.numberValue(read('baseline', 'baseline value')),
+      midTarget: this.numberValue(read('mid target', 'midterm target', 'mid-term target', 'mid target value')),
+      endTarget: this.numberValue(read('end target', 'end-term target', 'end target value')),
+      frequency: this.parseFrequency(this.stringValue(read('frequency', 'reporting frequency'))),
+      source: this.stringValue(read('source', 'means of verification', 'mov')),
+      responsibility: this.stringValue(read('responsibility', 'responsible unit', 'owner')),
+      department: this.stringValue(read('department')),
+      sector: this.stringValue(read('sector')),
+      crop: this.stringValue(read('crop')),
+      tags: this.stringListValue(read('tags')),
+      dimensionConfig: this.jsonValue(read('dimension config', 'dimension_config')),
+      supportsDistrictBreakdown: this.boolValue(read('supports district breakdown', 'district breakdown')) ?? false,
+      supportsBlockBreakdown: this.boolValue(read('supports block breakdown', 'block breakdown')) ?? false,
+      supportsGenderBreakdown: this.boolValue(read('supports gender breakdown', 'gender breakdown')) ?? false,
+      supportsYouthBreakdown: this.boolValue(read('supports youth breakdown', 'youth breakdown')) ?? false,
+      supportsIndigenousBreakdown: this.boolValue(read('supports indigenous breakdown', 'indigenous breakdown')) ?? false,
+      supportsHouseholdBreakdown: this.boolValue(read('supports household breakdown', 'household breakdown')) ?? false,
+      active: this.boolValue(read('active', 'is active')) ?? true,
+      existingNodeId: null as number | null,
+      existingIndicatorId: null as number | null,
+      nodeAction: 'create' as 'create' | 'existing' | 'update',
+      indicatorAction: 'create' as 'create' | 'skip' | 'update',
+    };
+
+    if (!row.level) row.errors.push('Missing level.');
+    if (!row.nodeTitle) row.errors.push('Missing node title.');
+    if (!row.indicatorName) row.errors.push('Missing indicator name.');
+    if (!row.nodeCode) row.errors.push('Unable to derive node code.');
+    if (!row.indicatorCode) row.errors.push('Unable to derive indicator code.');
+
+    return row;
+  }
+
+  private async buildNodeLookup() {
+    const nodes = await this.prisma.logframeNode.findMany();
+    const byCode = new Map<string, any>();
+    const byNaturalKey = new Map<string, any>();
+    for (const node of nodes) {
+      byCode.set(node.code, node);
+      byNaturalKey.set(this.nodeUniqueKey(node.code, node.title, node.level, node.parentId ?? null), node);
+    }
+    return { byCode, byNaturalKey };
+  }
+
+  private async buildIndicatorLookup() {
+    const indicators = await this.prisma.indicator.findMany();
+    const byCode = new Map<string, any>();
+    const byNaturalKey = new Map<string, any>();
+    for (const indicator of indicators) {
+      byCode.set(indicator.code, indicator);
+      byNaturalKey.set(this.indicatorUniqueKey(indicator.code, indicator.name, indicator.logframeNodeId, ''), indicator);
+    }
+    return { byCode, byNaturalKey };
+  }
+
+  private nodeUniqueKey(code: string | null, title: string | null, level: LogframeLevel | null, parentId: number | null) {
+    return `${code ?? ''}::${this.slug(title)}::${level ?? ''}::${parentId ?? ''}`;
+  }
+
+  private indicatorUniqueKey(code: string | null, name: string | null, nodeId: number | null, nodeTitle: string | null) {
+    return `${code ?? ''}::${this.slug(name)}::${nodeId ?? ''}::${this.slug(nodeTitle)}`;
+  }
+
+  private nodeChanged(existing: any, row: any, parentId: number | null) {
+    return existing.title !== row.nodeTitle
+      || existing.level !== row.level
+      || (existing.description ?? null) !== (row.nodeDescription ?? null)
+      || (existing.parentId ?? null) !== (parentId ?? null)
+      || (existing.sortOrder ?? 0) !== (row.sortOrder ?? 0)
+      || existing.active !== row.active;
+  }
+
+  private indicatorChanged(existing: any, row: any, nodeId: number | null) {
+    const tags = JSON.stringify(existing.tags ?? []);
+    const rowTags = JSON.stringify(row.tags ?? []);
+    return existing.name !== row.indicatorName
+      || (existing.description ?? null) !== (row.description ?? null)
+      || (existing.unit ?? null) !== (row.unit ?? null)
+      || (existing.baseline ?? null) !== (row.baseline ?? null)
+      || (existing.midTarget ?? null) !== (row.midTarget ?? null)
+      || (existing.endTarget ?? null) !== (row.endTarget ?? null)
+      || existing.frequency !== row.frequency
+      || (existing.source ?? null) !== (row.source ?? null)
+      || (existing.responsibility ?? null) !== (row.responsibility ?? null)
+      || (existing.department ?? null) !== (row.department ?? null)
+      || (existing.sector ?? null) !== (row.sector ?? null)
+      || (existing.crop ?? null) !== (row.crop ?? null)
+      || tags !== rowTags
+      || JSON.stringify(existing.dimensionConfig ?? null) !== JSON.stringify(row.dimensionConfig ?? null)
+      || existing.supportsDistrictBreakdown !== row.supportsDistrictBreakdown
+      || existing.supportsBlockBreakdown !== row.supportsBlockBreakdown
+      || existing.supportsGenderBreakdown !== row.supportsGenderBreakdown
+      || existing.supportsYouthBreakdown !== row.supportsYouthBreakdown
+      || existing.supportsIndigenousBreakdown !== row.supportsIndigenousBreakdown
+      || existing.supportsHouseholdBreakdown !== row.supportsHouseholdBreakdown
+      || existing.active !== row.active
+      || (nodeId != null && existing.logframeNodeId !== nodeId);
+  }
+
+  private async upsertImportNode(row: any, mode: 'skip' | 'update') {
+    let parentId: number | null = null;
+    if (row.parentNodeCode) {
+      const parent = await this.prisma.logframeNode.findFirst({
+        where: { OR: [{ code: row.parentNodeCode }, { title: row.parentNodeTitle ?? row.parentNodeCode }] },
+      });
+      parentId = parent?.id ?? null;
+    }
+
+    const existing = await this.prisma.logframeNode.findFirst({
+      where: {
+        OR: [
+          { code: row.nodeCode },
+          { title: row.nodeTitle, level: row.level, parentId },
+        ],
+      },
+    });
+
+    if (existing) {
+      if (mode === 'update' && this.nodeChanged(existing, row, parentId)) {
+        return this.prisma.logframeNode.update({
+          where: { id: existing.id },
+          data: {
+            title: row.nodeTitle,
+            level: row.level,
+            description: row.nodeDescription,
+            parentId,
+            sortOrder: row.sortOrder ?? 0,
+            active: row.active,
+          },
+        });
+      }
+      return existing;
+    }
+
+    return this.prisma.logframeNode.create({
+      data: {
+        code: row.nodeCode,
+        title: row.nodeTitle,
+        level: row.level,
+        description: row.nodeDescription,
+        parentId,
+        sortOrder: row.sortOrder ?? 0,
+        active: row.active,
+      },
+    });
+  }
+
+  private normalizeHeader(value: string | null | undefined) {
+    return String(value ?? '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  private stringValue(value: unknown) {
+    const text = String(value ?? '').trim();
+    return text ? text : null;
+  }
+
+  private numberValue(value: unknown) {
+    if (value === null || value === undefined || String(value).trim() === '') return null;
+    const cleaned = String(value).replace(/,/g, '').trim();
+    const parsed = Number(cleaned);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  private boolValue(value: unknown) {
+    const text = String(value ?? '').trim().toLowerCase();
+    if (!text) return null;
+    if (['true', '1', 'yes', 'y'].includes(text)) return true;
+    if (['false', '0', 'no', 'n'].includes(text)) return false;
+    return null;
+  }
+
+  private stringListValue(value: unknown) {
+    const text = this.stringValue(value);
+    if (!text) return [];
+    return text.split(',').map((item) => item.trim()).filter(Boolean);
+  }
+
+  private jsonValue(value: unknown) {
+    const text = this.stringValue(value);
+    if (!text) return null;
+    try {
+      return JSON.parse(text);
+    } catch (_) {
+      return { raw: text };
+    }
+  }
+
+  private parseFrequency(value: string | null): IndicatorFrequency {
+    const text = (value ?? '').toUpperCase().replace(/[^A-Z]+/g, '_');
+    const map: Record<string, IndicatorFrequency> = {
+      MONTHLY: IndicatorFrequency.MONTHLY,
+      QUARTERLY: IndicatorFrequency.QUARTERLY,
+      HALF_YEARLY: IndicatorFrequency.HALF_YEARLY,
+      HALF_YEAR: IndicatorFrequency.HALF_YEARLY,
+      ANNUAL: IndicatorFrequency.ANNUAL,
+      YEARLY: IndicatorFrequency.ANNUAL,
+      BIENNIAL: IndicatorFrequency.BIENNIAL,
+      MID_TERM: IndicatorFrequency.MID_TERM,
+      END_TERM: IndicatorFrequency.END_TERM,
+      AD_HOC: IndicatorFrequency.AD_HOC,
+    };
+    return map[text] ?? IndicatorFrequency.ANNUAL;
+  }
+
+  private parseLogframeLevel(value: unknown): LogframeLevel | null {
+    const text = String(value ?? '').trim().toUpperCase().replace(/[^A-Z]+/g, '_');
+    const map: Record<string, LogframeLevel> = {
+      OUTREACH: LogframeLevel.OUTREACH,
+      GOAL: LogframeLevel.GOAL,
+      DEVELOPMENT_OBJECTIVE: LogframeLevel.DEVELOPMENT_OBJECTIVE,
+      DEV_OBJECTIVE: LogframeLevel.DEVELOPMENT_OBJECTIVE,
+      OUTCOME: LogframeLevel.OUTCOME,
+      OUTPUT: LogframeLevel.OUTPUT,
+      SUB_OUTPUT: LogframeLevel.SUB_OUTPUT,
+      SUBOUTPUT: LogframeLevel.SUB_OUTPUT,
+      INDICATOR_GROUP: LogframeLevel.INDICATOR_GROUP,
+    };
+    return map[text] ?? null;
+  }
+
+  private slug(value: string | null) {
+    return String(value ?? '').trim().toUpperCase().replace(/[^A-Z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
+  private mapIndicatorData(dto: UpdateIndicatorDto): Prisma.IndicatorUpdateInput {
+    return {
       ...(dto.code !== undefined ? { code: dto.code } : {}),
       ...(dto.name !== undefined ? { name: dto.name } : {}),
       ...(dto.description !== undefined ? { description: dto.description } : {}),
@@ -397,31 +889,36 @@ export class LogframeService {
       ...(dto.baseline !== undefined ? { baseline: dto.baseline } : {}),
       ...(dto.midTarget !== undefined ? { midTarget: dto.midTarget } : {}),
       ...(dto.endTarget !== undefined ? { endTarget: dto.endTarget } : {}),
-      ...(dto.frequency !== undefined ? { frequency: dto.frequency as any } : {}),
+      ...(dto.frequency !== undefined ? { frequency: dto.frequency as IndicatorFrequency } : {}),
       ...(dto.source !== undefined ? { source: dto.source } : {}),
       ...(dto.responsibility !== undefined ? { responsibility: dto.responsibility } : {}),
-      ...(dto.department !== undefined ? { department: dto.department } : {}),
-      ...(dto.sector !== undefined ? { sector: dto.sector } : {}),
-      ...(dto.crop !== undefined ? { crop: dto.crop } : {}),
-      ...(dto.tags !== undefined ? { tags: dto.tags } : {}),
-      ...(dto.dimensionConfig !== undefined ? { dimensionConfig: dto.dimensionConfig as Prisma.InputJsonValue } : {}),
-      ...(dto.supportsDistrictBreakdown !== undefined ? { supportsDistrictBreakdown: dto.supportsDistrictBreakdown } : {}),
-      ...(dto.supportsBlockBreakdown !== undefined ? { supportsBlockBreakdown: dto.supportsBlockBreakdown } : {}),
-      ...(dto.supportsGenderBreakdown !== undefined ? { supportsGenderBreakdown: dto.supportsGenderBreakdown } : {}),
-      ...(dto.supportsYouthBreakdown !== undefined ? { supportsYouthBreakdown: dto.supportsYouthBreakdown } : {}),
-      ...(dto.supportsIndigenousBreakdown !== undefined ? { supportsIndigenousBreakdown: dto.supportsIndigenousBreakdown } : {}),
-      ...(dto.supportsHouseholdBreakdown !== undefined ? { supportsHouseholdBreakdown: dto.supportsHouseholdBreakdown } : {}),
       ...(dto.active !== undefined ? { active: dto.active } : {}),
-    } as any;
-
-    if ((dto as CreateIndicatorDto).logframeNodeId !== undefined) {
-      base.logframeNode = { connect: { id: (dto as any).logframeNodeId } };
-    }
-
-    return base;
+      ...(dto.supportsGenderBreakdown !== undefined
+        ? { supportsGenderBreakdown: dto.supportsGenderBreakdown }
+        : {}),
+      ...(dto.supportsYouthBreakdown !== undefined
+        ? { supportsYouthBreakdown: dto.supportsYouthBreakdown }
+        : {}),
+      ...(dto.supportsIndigenousBreakdown !== undefined
+        ? { supportsIndigenousBreakdown: dto.supportsIndigenousBreakdown }
+        : {}),
+      ...(dto.supportsHouseholdBreakdown !== undefined
+        ? { supportsHouseholdBreakdown: dto.supportsHouseholdBreakdown }
+        : {}),
+      ...(dto.supportsBlockBreakdown !== undefined
+        ? { supportsBlockBreakdown: dto.supportsBlockBreakdown }
+        : {}),
+      ...(dto.logframeNodeId !== undefined
+        ? {
+            logframeNode: {
+              connect: { id: dto.logframeNodeId },
+            },
+          }
+        : {}),
+    };
   }
 
-  private decorateIndicator<T extends { yearlyProgress?: any[]; logframeNode?: any; endTarget?: number }>(indicator: T) {
+  private decorateIndicator<T extends Indicator & { yearlyProgress?: any[]; logframeNode?: any }>(indicator: T) {
     const latest = this.pickLatestProgress(indicator.yearlyProgress ?? []);
     const target = latest?.annualTarget ?? latest?.cumulativeTarget ?? indicator.endTarget ?? 0;
     const actual = latest?.annualResult ?? latest?.cumulativeResult ?? 0;
@@ -508,14 +1005,22 @@ export class LogframeService {
   }
 
   private async ensureNodeExists(id: number) {
-    const exists = await (this.prisma as any).logframeNode.findUnique({ where: { id }, select: { id: true } });
+    const exists = await this.prisma.logframeNode.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
     if (!exists) {
       throw new NotFoundException('Logframe node not found');
     }
   }
 
   private async ensureIndicatorExists(id: number) {
-    const exists = await (this.prisma as any).indicator.findUnique({ where: { id }, select: { id: true } });
+    const exists = await this.prisma.indicator.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
     if (!exists) {
       throw new NotFoundException('Indicator not found');
     }
