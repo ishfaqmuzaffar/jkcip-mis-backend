@@ -619,9 +619,7 @@ export class LogframeService {
   }
 
   private parseCsvText(text: string): Record<string, unknown>[] {
-    const lines = text
-      .split(/?
-/)
+    const lines = text.split('\n').filter(l => l.trim() !== '');
       .filter((line) => line.trim() !== '');
 
     if (lines.length === 0) {
