@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class ComponentService {
-  constructor(private prisma: PrismaService) {}
+  private prisma = new PrismaClient();
 
   async findAll() {
     return this.prisma.component.findMany({
@@ -49,7 +49,6 @@ export class ComponentService {
     return this.prisma.component.delete({ where: { id } });
   }
 
-  // Sub-components
   async findAllSubComponents(componentId?: number) {
     return this.prisma.subComponent.findMany({
       where: componentId ? { componentId } : undefined,
@@ -68,7 +67,10 @@ export class ComponentService {
   }
 
   async createSubComponent(dto: any) {
-    return this.prisma.subComponent.create({ data: dto, include: { component: true } });
+    return this.prisma.subComponent.create({
+      data: dto,
+      include: { component: true },
+    });
   }
 
   async updateSubComponent(id: number, dto: any) {
@@ -79,24 +81,22 @@ export class ComponentService {
     return this.prisma.subComponent.delete({ where: { id } });
   }
 
-  // Scheme stats per subComponent
   async getSchemeStats(schemeId: number) {
     const beneficiaries = await this.prisma.beneficiary.findMany({
       where: { schemeId },
       select: { category: true, applicationStatus: true },
     });
 
-    const stats = {
+    return {
       total: beneficiaries.length,
       approved: beneficiaries.filter(b => b.applicationStatus === 'APPROVED').length,
-      pending: beneficiaries.filter(b => b.applicationStatus === 'PENDING').length,
+      pending:  beneficiaries.filter(b => b.applicationStatus === 'PENDING').length,
       reverted: beneficiaries.filter(b => b.applicationStatus === 'REVERTED').length,
-      sc: beneficiaries.filter(b => b.category === 'SC').length,
-      st: beneficiaries.filter(b => b.category === 'ST').length,
-      obc: beneficiaries.filter(b => b.category === 'OBC').length,
-      phh: beneficiaries.filter(b => b.category === 'PHH').length,
-      general: beneficiaries.filter(b => b.category === 'GENERAL').length,
+      sc:       beneficiaries.filter(b => b.category === 'SC').length,
+      st:       beneficiaries.filter(b => b.category === 'ST').length,
+      obc:      beneficiaries.filter(b => b.category === 'OBC').length,
+      phh:      beneficiaries.filter(b => b.category === 'PHH').length,
+      general:  beneficiaries.filter(b => b.category === 'GENERAL').length,
     };
-    return stats;
   }
 }
