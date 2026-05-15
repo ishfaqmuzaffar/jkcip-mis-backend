@@ -9,14 +9,13 @@
     "start:prod": "node dist/main.js",
     "prisma:generate": "node node_modules/prisma/build/index.js generate",
     "prisma:push": "node node_modules/prisma/build/index.js db push",
-    "prepare:deploy": "npm run prisma:generate && npm run build"
+    "prepare:deploy": "npm run prisma:generate && npm run build",
+    "seed": "node prisma/seed.js"
   },
-  "keywords": [
-    "nestjs",
-    "prisma",
-    "jkcip",
-    "mis"
-  ],
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "keywords": ["nestjs", "prisma", "jkcip", "mis"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
