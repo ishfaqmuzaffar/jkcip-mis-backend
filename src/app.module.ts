@@ -12,6 +12,7 @@ import { ApprovalsModule } from './approvals/approvals.module';
 import { RolesGuard } from './common/roles.guard';
 import { LogframeModule } from './logframe/logframe.module';
 import { ComponentModule } from './component/component.module';
+import { JwtAuthGuard } from './auth/jwt-auth.guard'; // ← NEW
 
 @Module({
   imports: [
@@ -32,7 +33,11 @@ import { ComponentModule } from './component/component.module';
     PrismaService,
     {
       provide: APP_GUARD,
-      useClass: RolesGuard,
+      useClass: JwtAuthGuard, // ← NEW: runs first, sets request.user
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,   // ← runs second, request.user is now set
     },
   ],
 })
