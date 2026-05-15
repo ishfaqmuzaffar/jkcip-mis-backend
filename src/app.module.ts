@@ -11,6 +11,7 @@ import { BeneficiariesModule } from './beneficiaries/beneficiaries.module';
 import { ApprovalsModule } from './approvals/approvals.module';
 import { RolesGuard } from './common/roles.guard';
 import { LogframeModule } from './logframe/logframe.module';
+import { ComponentModule } from './component/component.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { LogframeModule } from './logframe/logframe.module';
     BeneficiariesModule,
     ApprovalsModule,
     LogframeModule,
+    ComponentModule,
   ],
   providers: [
     PrismaService,
