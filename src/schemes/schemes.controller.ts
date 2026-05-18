@@ -1,8 +1,12 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body, Controller, Get, Param, ParseIntPipe,
+  Patch, Post, Req, UseGuards,
+} from '@nestjs/common';
 import { UserRole } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../common/roles.decorator';
 import { CreateSchemeDto } from './dto/create-scheme.dto';
+import { UpdateSchemeDto } from './dto/update-scheme.dto';
 import { SchemesService } from './schemes.service';
 import { UpdateSchemeStatusDto } from './dto/update-scheme-status.dto';
 
@@ -25,6 +29,16 @@ export class SchemesController {
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DEPARTMENT_OFFICER)
   create(@Body() createSchemeDto: CreateSchemeDto, @Req() req: any) {
     return this.schemesService.create(createSchemeDto, req.user?.userId);
+  }
+
+  // ← NEW: general update (title, budget, subComponentId, etc.)
+  @Patch(':id')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DEPARTMENT_OFFICER)
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateSchemeDto: UpdateSchemeDto,
+  ) {
+    return this.schemesService.update(id, updateSchemeDto);
   }
 
   @Patch(':id/status')
