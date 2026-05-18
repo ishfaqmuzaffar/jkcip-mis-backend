@@ -1,5 +1,4 @@
-import { IsString, IsOptional, IsNumber, IsDateString, IsEnum } from 'class-validator';
-import { SchemeStatus } from '@prisma/client';
+import { IsString, IsOptional, IsNumber, IsDateString } from 'class-validator';
 
 export class CreateSchemeDto {
   @IsString()
@@ -21,7 +20,15 @@ export class CreateSchemeDto {
 
   @IsOptional()
   @IsNumber()
+  utilizedBudget?: number;        // ← kept from original
+
+  @IsOptional()
+  @IsNumber()
   targetBeneficiaries?: number;
+
+  @IsOptional()
+  @IsNumber()
+  achievedBeneficiaries?: number; // ← kept from original
 
   @IsOptional()
   @IsDateString()
@@ -33,5 +40,5 @@ export class CreateSchemeDto {
 
   @IsOptional()
   @IsNumber()
-  subComponentId?: number;   // ← NEW: links scheme to a sub-component
+  subComponentId?: number;        // ← new field
 }
