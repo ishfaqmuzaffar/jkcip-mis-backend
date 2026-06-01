@@ -124,6 +124,7 @@ model User {
   createdApprovals   Approval[]              @relation("ApprovalRequestedBy")
   reviewedApprovals  Approval[]              @relation("ApprovalReviewedBy")
   verifiedIndicators IndicatorYearProgress[] @relation("IndicatorYearProgressVerifiedBy")
+  createdBeneficiaries Beneficiary[]           @relation("BeneficiaryCreatedBy")
 }
 
 // ─── Scheme (added subComponentId) ───────────────────────────────────────────
