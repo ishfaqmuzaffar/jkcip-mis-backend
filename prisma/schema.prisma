@@ -164,6 +164,7 @@ model Scheme {
   subComponent          SubComponent? @relation(fields: [subComponentId], references: [id], onDelete: SetNull) // ← NEW
   projects              Project[]
   beneficiaries         Beneficiary[]
+  awpbLines             AWPBLine[]
 
   @@index([department])
   @@index([status])
@@ -483,12 +484,15 @@ model AWPBLine {
   awpbId         Int
   componentId    Int?
   subComponentId Int?
+  schemeId       Int?
   awpb           AWPB          @relation(fields: [awpbId], references: [id], onDelete: Cascade)
   component      Component?    @relation(fields: [componentId], references: [id], onDelete: SetNull)
   subComponent   SubComponent? @relation(fields: [subComponentId], references: [id], onDelete: SetNull)
+  scheme         Scheme?       @relation(fields: [schemeId], references: [id], onDelete: SetNull)
 
   @@index([awpbId])
   @@index([componentId])
+  @@index([schemeId])
 }
 
 model AWPBHistory {
