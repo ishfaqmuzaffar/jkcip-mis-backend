@@ -105,6 +105,18 @@ enum ApplicationStatus {
   APPROVED
   REVERTED
 }
+enum AWPBStatus {
+  DRAFT
+  PIU_REVIEW
+  PMU_REVIEW
+  IFAD_SUBMISSION
+  IFAD_APPROVED
+  DPC_APPROVED
+  DAP_APPROVED
+  REJECTED
+  RETURNED
+}
+
 
 // ─── Existing Models (unchanged) ──────────────────────────────────────────────
 
@@ -125,6 +137,8 @@ model User {
   reviewedApprovals  Approval[]              @relation("ApprovalReviewedBy")
   verifiedIndicators IndicatorYearProgress[] @relation("IndicatorYearProgressVerifiedBy")
   createdBeneficiaries Beneficiary[]         @relation("BeneficiaryCreatedBy")
+  awpbs                AWPB[]                  @relation("AWPBCreatedBy")
+  awpbHistory          AWPBHistory[]            @relation("AWPBHistoryUser")
 }
 
 // ─── Scheme (added subComponentId) ───────────────────────────────────────────
@@ -394,6 +408,7 @@ model Component {
   sortOrder     Int            @default(0)
   active        Boolean        @default(true)
   subComponents SubComponent[]
+  awpbLines     AWPBLine[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
@@ -410,9 +425,83 @@ model SubComponent {
   componentId Int
   component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
   schemes     Scheme[]
+  awpbLines   AWPBLine[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
   @@index([componentId])
   @@index([sortOrder])
+}
+
+// ─── AWPB Workflow Models ─────────────────────────────────────────────────────
+
+model AWPB {
+  id            Int           @id @default(autoincrement())
+  title         String
+  financialYear String
+  district      String?
+  department    String?
+  status        AWPBStatus    @default(DRAFT)
+  totalBudget   Float         @default(0)
+  q1Budget      Float         @default(0)
+  q2Budget      Float         @default(0)
+  q3Budget      Float         @default(0)
+  q4Budget      Float         @default(0)
+  remarks       String?
+  submittedAt   DateTime?
+  approvedAt    DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  createdById   Int?
+  createdBy     User?         @relation("AWPBCreatedBy", fields: [createdById], references: [id])
+  lines         AWPBLine[]
+  history       AWPBHistory[]
+
+  @@index([status])
+  @@index([financialYear])
+  @@index([district])
+  @@index([createdById])
+}
+
+model AWPBLine {
+  id             Int           @id @default(autoincrement())
+  activityName   String
+  unit           String?
+  quantity       Float         @default(0)
+  unitCost       Float         @default(0)
+  totalCost      Float         @default(0)
+  q1Target       Float         @default(0)
+  q2Target       Float         @default(0)
+  q3Target       Float         @default(0)
+  q4Target       Float         @default(0)
+  q1Budget       Float         @default(0)
+  q2Budget       Float         @default(0)
+  q3Budget       Float         @default(0)
+  q4Budget       Float         @default(0)
+  remarks        String?
+  sortOrder      Int           @default(0)
+  awpbId         Int
+  componentId    Int?
+  subComponentId Int?
+  awpb           AWPB          @relation(fields: [awpbId], references: [id], onDelete: Cascade)
+  component      Component?    @relation(fields: [componentId], references: [id], onDelete: SetNull)
+  subComponent   SubComponent? @relation(fields: [subComponentId], references: [id], onDelete: SetNull)
+
+  @@index([awpbId])
+  @@index([componentId])
+}
+
+model AWPBHistory {
+  id         Int         @id @default(autoincrement())
+  action     String
+  fromStatus AWPBStatus?
+  toStatus   AWPBStatus
+  comments   String?
+  createdAt  DateTime    @default(now())
+  awpbId     Int
+  userId     Int?
+  awpb       AWPB        @relation(fields: [awpbId], references: [id], onDelete: Cascade)
+  user       User?       @relation("AWPBHistoryUser", fields: [userId], references: [id])
+
+  @@index([awpbId])
 }

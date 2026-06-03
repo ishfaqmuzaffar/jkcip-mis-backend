@@ -12,7 +12,8 @@ import { ApprovalsModule } from './approvals/approvals.module';
 import { RolesGuard } from './common/roles.guard';
 import { LogframeModule } from './logframe/logframe.module';
 import { ComponentModule } from './component/component.module';
-import { JwtAuthGuard } from './auth/jwt-auth.guard'; // ← NEW
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { AWPBModule } from './awpb/awpb.module';
 
 @Module({
   imports: [
