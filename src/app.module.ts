@@ -29,16 +29,17 @@ import { AWPBModule } from './awpb/awpb.module';
     ApprovalsModule,
     LogframeModule,
     ComponentModule,
+    AWPBModule,        // ← was imported but missing from array
   ],
   providers: [
     PrismaService,
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard, // ← NEW: runs first, sets request.user
+      useClass: JwtAuthGuard,
     },
     {
       provide: APP_GUARD,
-      useClass: RolesGuard,   // ← runs second, request.user is now set
+      useClass: RolesGuard,
     },
   ],
 })
