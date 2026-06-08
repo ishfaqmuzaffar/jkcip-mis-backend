@@ -1,35 +1,39 @@
 // prisma/fix-logframe-nodes.js
-// Fixes logframe node titles and removes ghost duplicate nodes
-// Safe to run multiple times.
+// Fixes logframe node titles and removes ghost nodes (O1, OP1, OP2, O2, OP3)
 // Run with: node prisma/fix-logframe-nodes.js
 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// Correct titles keyed by node code (from the official JKCIP Excel logframe)
+// Ghost node codes to delete (old short codes from early seeding)
+const GHOST_CODES = ['O1', 'OP1', 'OP2', 'O2', 'OP3'];
+
+// Correct titles keyed by the ACTUAL codes in the DB (OC-1, OP-1.1 etc.)
 const NODE_TITLE_FIXES = {
-  'project-goal': 'Contribute to the sustained increase in incomes of rural households by improving the competitiveness of the farming operations',
-  'development-objective': 'Improve the competitiveness of the farmers through a value chain approach covering production, value addition of high value niche crops, spices and horticulture produce',
-  'outcome-1': "Outcome 1: Expansion and improved performance of Rural Producers' Organizations (FPOs)",
-  'outcome-2': 'Outcome 2: Enhanced productivity and production (niche and horticultural crops)',
-  'outcome-3': 'Outcome 3: Improved price realization of Agri and allied farmers',
-  'outcome-4': 'Outcome 4: Improved resilience of vulnerable groups',
-  'outcome-5': 'Outcome 5: Project management systems strengthened',
-  'output-1-1': 'Output 1.1: Scaling up collectivization',
-  'output-2-1': 'Output 2.1: GAP training',
-  'output-2-2': 'Output 2.2: Access to inputs and technology packages',
-  'output-2-3': 'Output 2.3: Water management systems established',
-  'output-2-4': 'Output 2.4: Nurseries established',
-  'output-3-1': 'Output 3.1: Enterprise promotion',
-  'output-3-2': 'Output 3.2: Market promotion',
-  'output-3-3': 'Output 3.3: Incubation and start-up',
-  'output-4-1': 'Output 4.1: Pastoralists support',
-  'output-4-2': 'Output 4.2: Support to other vulnerable groups',
-  'output-5-1': 'Output 5.1: Policy engagement',
-  'output-5-2': 'Output 5.2: Staff training of Agri and allied Directorates',
+  'OUTREACH':  'Outreach',
+  'GOAL':      'Contribute to the sustained increase in incomes of rural households by improving the competitiveness of the farming operations',
+  'DEV-OBJ':  'Improve the competitiveness of the farmers through a value chain approach covering production, value addition of high value niche crops, spices and horticulture produce',
+  'OC-1':     "Outcome 1: Expansion and improved performance of Rural Producers' Organizations (FPOs)",
+  'OC-2':     'Outcome 2: Enhanced productivity and production (niche and horticultural crops)',
+  'OC-3':     'Outcome 3: Improved price realization of Agri and allied farmers',
+  'OC-4':     'Outcome 4: Improved resilience of vulnerable groups',
+  'OC-5':     'Outcome 5: Project management systems strengthened',
+  'OP-1.1':   'Output 1.1: Scaling up collectivization',
+  'OP-2.1':   'Output 2.1: GAP training',
+  'OP-2.2':   'Output 2.2: Access to inputs and technology packages',
+  'OP-2.3':   'Output 2.3: Water management systems established',
+  'OP-2.4':   'Output 2.4: Nurseries established',
+  'OP-3.1':   'Output 3.1: Enterprise promotion',
+  'OP-3.2':   'Output 3.2: Market promotion',
+  'OP-3.3':   'Output 3.3: Incubation and start-up',
+  'OP-4.1':   'Output 4.1: Pastoralists support',
+  'OP-4.2':   'Output 4.2: Support to other vulnerable groups',
+  'OP-5.1':   'Output 5.1: Policy engagement',
+  'OP-5.2':   'Output 5.2: Staff training of Agri and allied Directorates',
 };
 
-// Correct indicator names keyed by code
+// Clean indicator names — keyed by the indicator code already in the DB
+// Maps old generic names → clean names
 const INDICATOR_NAME_FIXES = {
   'outreach-ind-001': 'Persons reached by project-supported activities',
   'outreach-ind-002': 'Males reached',
@@ -163,109 +167,75 @@ const INDICATOR_NAME_FIXES = {
   'output-5-2-ind-130': 'Agreed positions filled (%)',
 };
 
+async function deleteNodeSafely(nodeId) {
+  // Delete in order: progress → indicators → children (recursively) → node
+  const children = await prisma.logframeNode.findMany({ where: { parentId: nodeId } });
+  for (const child of children) {
+    await deleteNodeSafely(child.id);
+  }
+  const indicators = await prisma.indicator.findMany({ where: { logframeNodeId: nodeId } });
+  for (const ind of indicators) {
+    await prisma.indicatorYearProgress.deleteMany({ where: { indicatorId: ind.id } });
+    await prisma.indicator.delete({ where: { id: ind.id } });
+  }
+  // Check node still exists before deleting (may have been cascade-deleted)
+  const exists = await prisma.logframeNode.findUnique({ where: { id: nodeId }, select: { id: true } });
+  if (exists) {
+    await prisma.logframeNode.delete({ where: { id: nodeId } });
+  }
+}
+
 async function main() {
   console.log('🔧 JKCIP Logframe Fix Script\n');
 
-  // ── Step 1: List all nodes so we can see what ghost data exists ─────────────
-  const allNodes = await prisma.logframeNode.findMany({ orderBy: { id: 'asc' } });
-  console.log(`📋 Found ${allNodes.length} nodes in DB:\n`);
-  for (const n of allNodes) {
-    console.log(`  [${n.id}] ${n.code} — "${n.title.slice(0, 60)}..."`);
-  }
-  console.log('');
-
-  // ── Step 2: Find canonical node codes (the ones we know are correct) ────────
-  const canonicalCodes = Object.keys(NODE_TITLE_FIXES);
-  canonicalCodes.push('outreach'); // outreach title is fine
-
-  // ── Step 3: Find ghost/duplicate nodes — any node whose code is NOT in our
-  //    canonical list is a ghost from old seeding (e.g. "01", "02") ───────────
-  const ghostNodes = allNodes.filter(n => !canonicalCodes.includes(n.code));
-
-  if (ghostNodes.length > 0) {
-    console.log(`🗑  Found ${ghostNodes.length} ghost node(s) to remove:`);
-    for (const ghost of ghostNodes) {
-      console.log(`  → [${ghost.id}] "${ghost.code}" — "${ghost.title.slice(0, 60)}"`);
-
-      // Move any indicators attached to ghost to the correct canonical node
-      const indicators = await prisma.indicator.findMany({
-        where: { logframeNodeId: ghost.id },
-      });
-
-      if (indicators.length > 0) {
-        console.log(`    ⚠ Ghost has ${indicators.length} indicator(s) — they will be deleted with the node`);
-        // Delete progress records first, then indicators, then node
-        for (const ind of indicators) {
-          await prisma.indicatorYearProgress.deleteMany({ where: { indicatorId: ind.id } });
-          await prisma.indicator.delete({ where: { id: ind.id } });
-        }
-      }
-
-      // Delete ghost node children if any
-      await prisma.logframeNode.deleteMany({ where: { parentId: ghost.id } });
-      await prisma.logframeNode.delete({ where: { id: ghost.id } });
-      console.log(`    ✅ Deleted ghost node [${ghost.id}]`);
-    }
-    console.log('');
-  } else {
-    console.log('✅ No ghost nodes found.\n');
-  }
-
-  // ── Step 4: Fix node titles for all canonical nodes ─────────────────────────
-  console.log('📝 Updating node titles...');
-  let nodeFixed = 0;
-
-  for (const [code, correctTitle] of Object.entries(NODE_TITLE_FIXES)) {
+  // ── Step 1: Delete ghost nodes ───────────────────────────────────────────
+  console.log('🗑  Removing ghost nodes...');
+  for (const code of GHOST_CODES) {
     const node = await prisma.logframeNode.findUnique({ where: { code } });
     if (!node) {
-      console.log(`  ⚠ Node "${code}" not found in DB — skipping`);
+      console.log(`  ✓ "${code}" not found — already clean`);
       continue;
     }
-    if (node.title === correctTitle) {
-      continue; // already correct
-    }
-    await prisma.logframeNode.update({
-      where: { id: node.id },
-      data: { title: correctTitle },
-    });
-    console.log(`  ✅ Fixed: "${code}"`);
-    console.log(`     Was: "${node.title.slice(0, 70)}"`);
-    console.log(`     Now: "${correctTitle.slice(0, 70)}"`);
+    console.log(`  → Deleting [${node.id}] "${code}" — "${node.title}"`);
+    await deleteNodeSafely(node.id);
+    console.log(`    ✅ Deleted`);
+  }
+  console.log('');
+
+  // ── Step 2: Fix node titles ──────────────────────────────────────────────
+  console.log('📝 Fixing node titles...');
+  let nodeFixed = 0;
+  for (const [code, correctTitle] of Object.entries(NODE_TITLE_FIXES)) {
+    const node = await prisma.logframeNode.findUnique({ where: { code } });
+    if (!node) { console.log(`  ⚠ "${code}" not in DB — skipping`); continue; }
+    if (node.title === correctTitle) continue;
+    await prisma.logframeNode.update({ where: { id: node.id }, data: { title: correctTitle } });
+    console.log(`  ✅ ${code}: "${correctTitle.slice(0, 65)}"`);
     nodeFixed++;
   }
-  console.log(`\n  ${nodeFixed} node title(s) updated.\n`);
+  console.log(`  ${nodeFixed} node(s) updated.\n`);
 
-  // ── Step 5: Fix indicator names ─────────────────────────────────────────────
-  console.log('📝 Updating indicator names...');
+  // ── Step 3: Fix indicator names ──────────────────────────────────────────
+  console.log('📝 Fixing indicator names...');
   let indFixed = 0;
-
   for (const [code, correctName] of Object.entries(INDICATOR_NAME_FIXES)) {
     const ind = await prisma.indicator.findUnique({ where: { code } });
-    if (!ind) continue;
-    if (ind.name === correctName) continue;
-
-    await prisma.indicator.update({
-      where: { id: ind.id },
-      data: { name: correctName },
-    });
+    if (!ind || ind.name === correctName) continue;
+    await prisma.indicator.update({ where: { id: ind.id }, data: { name: correctName } });
     indFixed++;
   }
-  console.log(`  ${indFixed} indicator name(s) updated.\n`);
+  console.log(`  ${indFixed} indicator(s) updated.\n`);
 
-  // ── Step 6: Final state summary ──────────────────────────────────────────────
+  // ── Step 4: Final summary ────────────────────────────────────────────────
   const finalNodes = await prisma.logframeNode.findMany({ orderBy: { sortOrder: 'asc' } });
   const finalIndicators = await prisma.indicator.count();
-  console.log('─────────────────────────────────────');
-  console.log(`✅ Done. Final state:`);
-  console.log(`   Nodes: ${finalNodes.length}`);
-  console.log(`   Indicators: ${finalIndicators}`);
-  console.log('');
-  console.log('Nodes now in DB:');
+  console.log('─────────────────────────────────────────');
+  console.log(`✅ Done. Nodes: ${finalNodes.length} | Indicators: ${finalIndicators}\n`);
   for (const n of finalNodes) {
-    console.log(`  [${n.level}] ${n.code}: ${n.title.slice(0, 70)}`);
+    console.log(`  [${n.level.padEnd(22)}] ${n.code.padEnd(10)} ${n.title.slice(0, 65)}`);
   }
 }
 
 main()
-  .catch((e) => { console.error('❌ Error:', e); process.exit(1); })
+  .catch((e) => { console.error('\n❌ Error:', e.message); process.exit(1); })
   .finally(async () => { await prisma.$disconnect(); });
