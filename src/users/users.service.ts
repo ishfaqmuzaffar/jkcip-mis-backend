@@ -105,3 +105,25 @@ export class UsersService {
     });
   }
 }
+
+  async update(id: number, data: {
+    fullName?: string;
+    role?: UserRole;
+    department?: string;
+    phone?: string;
+  }) {
+    return this.prisma.user.update({
+      where: { id },
+      data,
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        role: true,
+        status: true,
+        department: true,
+        phone: true,
+        createdAt: true,
+      },
+    });
+  }
