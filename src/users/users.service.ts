@@ -38,9 +38,7 @@ export class UsersService {
 
   async findAll() {
     return this.prisma.user.findMany({
-      orderBy: {
-        id: 'desc',
-      },
+      orderBy: { id: 'desc' },
       select: {
         id: true,
         fullName: true,
@@ -70,14 +68,37 @@ export class UsersService {
   }
 
   async findByEmail(email: string) {
-    return this.prisma.user.findUnique({
-      where: { email },
-    });
+    return this.prisma.user.findUnique({ where: { email } });
   }
 
   async findById(id: number) {
     return this.prisma.user.findUnique({
       where: { id },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        role: true,
+        status: true,
+        department: true,
+        phone: true,
+        createdAt: true,
+      },
+    });
+  }
+
+  async update(
+    id: number,
+    data: {
+      fullName?: string;
+      role?: UserRole;
+      department?: string;
+      phone?: string;
+    },
+  ) {
+    return this.prisma.user.update({
+      where: { id },
+      data,
       select: {
         id: true,
         fullName: true,
@@ -105,25 +126,3 @@ export class UsersService {
     });
   }
 }
-
-  async update(id: number, data: {
-    fullName?: string;
-    role?: UserRole;
-    department?: string;
-    phone?: string;
-  }) {
-    return this.prisma.user.update({
-      where: { id },
-      data,
-      select: {
-        id: true,
-        fullName: true,
-        email: true,
-        role: true,
-        status: true,
-        department: true,
-        phone: true,
-        createdAt: true,
-      },
-    });
-  }
