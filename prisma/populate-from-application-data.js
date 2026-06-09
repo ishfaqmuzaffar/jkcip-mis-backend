@@ -258,7 +258,6 @@ async function main() {
         },
       });
 
-      const pct = indicator.unit === '%' ? '' : '';
       console.log(`  ✅ ${code}`);
       console.log(`     ${indicator.name}`);
       console.log(`     Value: ${result}${indicator.unit ? ' ' + indicator.unit : ''}`);
@@ -291,12 +290,12 @@ async function main() {
     ['output-4-2-ind-112','Youth clubs',             124,  1300],
   ];
 
-  console.log(`${'Indicator':<35} ${'Result':>8} ${'Mid-target':>12}  ${'% of target':>12}`);
+  console.log('Indicator'.padEnd(35) + 'Result'.padStart(9) + 'Mid-target'.padStart(13) + '% of target'.padStart(14));
   console.log('-'.repeat(75));
   for (const [code, label, val, mid] of summaryData) {
     const pct = mid ? `${Math.round((val / mid) * 100)}%` : 'N/A';
     const flag = mid && val >= mid ? ' ✓' : '';
-    console.log(`${label:<35} ${val.toString().padStart(8)} ${mid.toString().padStart(12)}  ${(pct + flag).padStart(12)}`);
+    console.log(label.padEnd(35) + val.toString().padStart(9) + mid.toString().padStart(13) + (pct + flag).padStart(14));
   }
 
   console.log('\n── Notes ────────────────────────────────────────────');
