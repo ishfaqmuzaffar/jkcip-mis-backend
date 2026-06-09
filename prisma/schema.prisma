@@ -262,6 +262,7 @@ model Beneficiary {
   scheme            Scheme?               @relation(fields: [schemeId], references: [id], onDelete: SetNull)
   project           Project?              @relation(fields: [projectId], references: [id], onDelete: SetNull)
   createdBy         User?                 @relation("BeneficiaryCreatedBy", fields: [createdById], references: [id])
+  surveyResponses   SurveyResponse[]
 
   @@index([district])
   @@index([status])
@@ -353,6 +354,7 @@ model Indicator {
   logframeNodeId              Int
   logframeNode                LogframeNode       @relation(fields: [logframeNodeId], references: [id], onDelete: Cascade)
   yearlyProgress              IndicatorYearProgress[]
+  surveyValues                SurveyIndicatorValue[]
 
   @@index([logframeNodeId])
   @@index([department])
@@ -509,3 +511,147 @@ model AWPBHistory {
 
   @@index([awpbId])
 }
+
+// ─── Survey Module ────────────────────────────────────────────────────────────
+
+enum SurveyRoundType {
+  BASELINE
+  MIDLINE
+  ENDLINE
+}
+
+enum SurveyRoundStatus {
+  DRAFT       // being configured, not yet open for data entry
+  OPEN        // field staff can submit responses
+  CLOSED      // data collection complete, computing aggregates
+  CONFIRMED   // PMU reviewed and wrote values to logframe
+}
+
+enum SurveyResponseStatus {
+  DRAFT       // saved locally / partially filled
+  SUBMITTED   // synced to server
+  VERIFIED    // reviewed by supervisor
+}
+
+// One row per survey round (max 3 rows in the project lifetime)
+model SurveyRound {
+  id            Int               @id @default(autoincrement())
+  type          SurveyRoundType   @unique        // only one BASELINE, one MIDLINE, one ENDLINE
+  label         String                           // e.g. "Baseline Survey 2024"
+  year          Int                              // reference year
+  status        SurveyRoundStatus @default(DRAFT)
+  description   String?
+  openedAt      DateTime?                        // when data collection started
+  closedAt      DateTime?                        // when data collection ended
+  confirmedAt   DateTime?                        // when PMU wrote to logframe
+  targetCount   Int               @default(0)   // expected number of responses
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  responses     SurveyResponse[]
+  indicatorValues SurveyIndicatorValue[]
+
+  @@index([status])
+  @@index([type])
+}
+
+// One row per beneficiary per round — stores all 4 form sections as JSON blobs
+// plus key computed fields for quick aggregation
+model SurveyResponse {
+  id              Int                  @id @default(autoincrement())
+  status          SurveyResponseStatus @default(DRAFT)
+
+  // ── Beneficiary identity (denormalised for offline use) ─────────
+  beneficiaryId   Int?                           // null until synced (offline)
+  beneficiaryUhid String?                        // UHID for offline matching
+  fullName        String?
+  district        String?
+  block           String?
+  village         String?
+  gender          String?
+  isYouth         Boolean              @default(false)
+  isBpl           Boolean              @default(false)
+  category        String?              // SC/ST/OBC/GENERAL
+
+  // ── Section 1: Household ────────────────────────────────────────
+  // Income (INR/year), assets (0-5 scale), land holding (ha)
+  annualIncome    Float?
+  landHolding     Float?
+  householdAssets Json?               // { livestock: true, tractor: false, ... }
+
+  // ── Section 2: Crop ─────────────────────────────────────────────
+  // Array of { crop, area_ha, yield_kg, productivity_kg_ha, marketed_grade }
+  cropData        Json?
+
+  // ── Section 3: FPO / PO ─────────────────────────────────────────
+  isFpoMember     Boolean?
+  fpoName         String?
+  fpoSalesIncrease Boolean?           // did sales increase since last round?
+  fpoServicesRating Int?              // 1-5
+
+  // ── Section 4: Satisfaction (SF 2.1, SF 2.2) ───────────────────
+  satisfactionScore       Int?        // 1-5 (SF 2.1)
+  decisionInfluenceScore  Int?        // 1-5 (SF 2.2)
+
+  // ── Device / sync metadata ──────────────────────────────────────
+  deviceId        String?             // device identifier for offline tracking
+  localId         String?             // UUID assigned offline before sync
+  submittedAt     DateTime?           // when synced to server
+  verifiedAt      DateTime?
+  remarks         String?
+
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  roundId         Int
+  round           SurveyRound         @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  beneficiary     Beneficiary?        @relation(fields: [beneficiaryId], references: [id], onDelete: SetNull)
+
+  @@unique([roundId, beneficiaryId])  // one response per beneficiary per round
+  @@unique([roundId, localId])        // offline dedup guard
+  @@index([roundId])
+  @@index([beneficiaryId])
+  @@index([district])
+  @@index([status])
+  @@index([deviceId])
+}
+
+// Aggregated indicator values computed from responses when a round closes.
+// PMU reviews these before they are written to Indicator.baseline / midTarget / endTarget.
+model SurveyIndicatorValue {
+  id              Int         @id @default(autoincrement())
+
+  // The computed value for this indicator in this round
+  computedValue   Float?
+  unit            String?
+  sampleSize      Int         @default(0)   // how many responses contributed
+  methodology     String?                   // brief note on how value was derived
+
+  // Disaggregations (mirroring IndicatorYearProgress structure)
+  maleValue       Float?
+  femaleValue     Float?
+  youthValue      Float?
+  indigenousValue Float?
+  bplValue        Float?
+
+  // PMU review
+  reviewedValue   Float?                    // PMU may override the computed value
+  reviewNotes     String?
+  writtenToLogframe Boolean     @default(false)
+  writtenAt       DateTime?
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  roundId         Int
+  indicatorId     Int
+
+  round           SurveyRound @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  indicator       Indicator   @relation(fields: [indicatorId], references: [id], onDelete: Cascade)
+
+  @@unique([roundId, indicatorId])
+  @@index([roundId])
+  @@index([indicatorId])
+  @@index([writtenToLogframe])
+}
+
