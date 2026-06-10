@@ -30,8 +30,8 @@ const D = {
 };
 
 const total_outreach = D.total_male_approved + D.total_female_approved;
-const male_pct   = Math.round((D.total_male_approved   / total_outreach) * 10) / 10;
-const female_pct = Math.round((D.total_female_approved / total_outreach) * 10) / 10;
+const male_pct   = Math.round((D.total_male_approved   / total_outreach) * 1000) / 10;
+const female_pct = Math.round((D.total_female_approved / total_outreach) * 1000) / 10;
 const total_water = D.water_mgmt_agri + D.water_mgmt_hort;
 
 // ── Mappings: [realCode, result, male, female, youth, remarks] ────────────────
@@ -108,9 +108,9 @@ async function upsertProgress(indicatorId, result, male, female, youth, remarks)
       indicatorId_reportYear_district_block_village: {
         indicatorId,
         reportYear: YEAR,
-        district:   null,
-        block:      null,
-        village:    null,
+        district:   '',
+        block:      '',
+        village:    '',
       },
     },
     update: {
@@ -132,9 +132,9 @@ async function upsertProgress(indicatorId, result, male, female, youth, remarks)
       maleValue:         male    ?? undefined,
       femaleValue:       female  ?? undefined,
       youthValue:        youth   ?? undefined,
-      district:          null,
-      block:             null,
-      village:           null,
+      district:          '',
+      block:             '',
+      village:           '',
       evidenceSource:    'Component/Scheme Application Data Report (June 2026)',
       remarks,
       lastReportedAt:    new Date(),
