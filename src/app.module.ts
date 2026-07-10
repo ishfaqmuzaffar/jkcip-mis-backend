@@ -18,9 +18,7 @@ import { MprModule } from './mpr/mpr.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     UsersModule,
     DashboardModule,
@@ -30,18 +28,13 @@ import { MprModule } from './mpr/mpr.module';
     ApprovalsModule,
     LogframeModule,
     ComponentModule,
-    AWPBModule,        // ← was imported but missing from array
+    AWPBModule,
+    MprModule,
   ],
   providers: [
     PrismaService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
 export class AppModule {}

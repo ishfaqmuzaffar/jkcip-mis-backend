@@ -9,7 +9,7 @@ import {
   reportMonthToFinYear,
 } from './mpr.mapping';
 
-interface FetchResult {
+export interface FetchResult {
   department: string;
   tabName: string;
   reportMonth: string;
