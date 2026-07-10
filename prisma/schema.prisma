@@ -263,6 +263,7 @@ model Beneficiary {
   scheme            Scheme?               @relation(fields: [schemeId], references: [id], onDelete: SetNull)
   project           Project?              @relation(fields: [projectId], references: [id], onDelete: SetNull)
   createdBy         User?                 @relation("BeneficiaryCreatedBy", fields: [createdById], references: [id])
+  surveyResponses   SurveyResponse[]
 
   @@index([district])
   @@index([status])
@@ -354,6 +355,7 @@ model Indicator {
   logframeNodeId              Int
   logframeNode                LogframeNode       @relation(fields: [logframeNodeId], references: [id], onDelete: Cascade)
   yearlyProgress              IndicatorYearProgress[]
+  surveyValues                SurveyIndicatorValue[]
 
   @@index([logframeNodeId])
   @@index([department])
@@ -509,6 +511,111 @@ model AWPBHistory {
   user       User?       @relation("AWPBHistoryUser", fields: [userId], references: [id])
 
   @@index([awpbId])
+}
+
+// ─── Survey Module (Baseline / Midline / Endline) ─────────────────────────────
+
+enum SurveyRoundType {
+  BASELINE
+  MIDLINE
+  ENDLINE
+}
+
+enum SurveyRoundStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  CONFIRMED
+}
+
+enum SurveyResponseStatus {
+  DRAFT
+  SUBMITTED
+  VERIFIED
+}
+
+model SurveyRound {
+  id              Int                    @id @default(autoincrement())
+  type            SurveyRoundType        @unique
+  label           String
+  year            Int
+  description     String?
+  targetCount     Int                    @default(0)
+  status          SurveyRoundStatus      @default(DRAFT)
+  openedAt        DateTime?
+  closedAt        DateTime?
+  confirmedAt     DateTime?
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  responses       SurveyResponse[]
+  indicatorValues SurveyIndicatorValue[]
+
+  @@index([status])
+  @@index([year])
+}
+
+model SurveyResponse {
+  id                     Int                  @id @default(autoincrement())
+  roundId                Int
+  beneficiaryId          Int?
+  beneficiaryUhid        String?
+  localId                String?
+  deviceId               String?
+  fullName               String?
+  district               String?
+  block                  String?
+  village                String?
+  gender                 String?
+  isYouth                Boolean              @default(false)
+  isBpl                  Boolean              @default(false)
+  category               String?
+  annualIncome           Float?
+  landHolding            Float?
+  householdAssets        Json?
+  cropData               Json?
+  isFpoMember            Boolean?
+  fpoName                String?
+  fpoSalesIncrease       Boolean?
+  fpoServicesRating      Int?
+  satisfactionScore      Int?
+  decisionInfluenceScore Int?
+  remarks                String?
+  status                 SurveyResponseStatus @default(DRAFT)
+  submittedAt            DateTime?
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+  round                  SurveyRound          @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  beneficiary            Beneficiary?         @relation(fields: [beneficiaryId], references: [id], onDelete: SetNull)
+
+  @@unique([roundId, localId])
+  @@unique([roundId, beneficiaryId])
+  @@index([roundId])
+  @@index([district])
+  @@index([block])
+  @@index([status])
+  @@index([beneficiaryUhid])
+}
+
+model SurveyIndicatorValue {
+  id                Int         @id @default(autoincrement())
+  roundId           Int
+  indicatorId       Int
+  computedValue     Float?
+  reviewedValue     Float?
+  reviewNotes       String?
+  sampleSize        Int?
+  unit              String?
+  methodology       String?
+  writtenToLogframe Boolean     @default(false)
+  writtenAt         DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  round             SurveyRound @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  indicator         Indicator   @relation(fields: [indicatorId], references: [id], onDelete: Cascade)
+
+  @@unique([roundId, indicatorId])
+  @@index([roundId])
+  @@index([indicatorId])
 }
 
 // ─── MPR Auto-fetch Module ────────────────────────────────────────────────────
