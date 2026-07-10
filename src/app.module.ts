@@ -14,7 +14,7 @@ import { LogframeModule } from './logframe/logframe.module';
 import { ComponentModule } from './component/component.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AWPBModule } from './awpb/awpb.module';
-import { SurveyModule } from './survey/survey.module';
+import { MprModule } from './mpr/mpr.module';
 
 @Module({
   imports: [
@@ -30,8 +30,7 @@ import { SurveyModule } from './survey/survey.module';
     ApprovalsModule,
     LogframeModule,
     ComponentModule,
-    AWPBModule,
-    SurveyModule,
+    AWPBModule,        // ← was imported but missing from array
   ],
   providers: [
     PrismaService,

@@ -15,7 +15,12 @@
   "prisma": {
     "seed": "node prisma/seed.js"
   },
-  "keywords": ["nestjs", "prisma", "jkcip", "mis"],
+  "keywords": [
+    "nestjs",
+    "prisma",
+    "jkcip",
+    "mis"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
@@ -35,9 +40,11 @@
     "passport-local": "^1.0.0",
     "prisma": "5.19.1",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2"
+    "rxjs": "^7.8.2",
+    "@nestjs/schedule": "^4.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@types/node-cron": "^3.0.0"
   }
 }
