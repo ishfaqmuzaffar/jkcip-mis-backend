@@ -14,6 +14,7 @@ import { LogframeModule } from './logframe/logframe.module';
 import { ComponentModule } from './component/component.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AWPBModule } from './awpb/awpb.module';
+import { SurveyModule } from './survey/survey.module';
 import { MprModule } from './mpr/mpr.module';
 
 @Module({
@@ -29,6 +30,7 @@ import { MprModule } from './mpr/mpr.module';
     LogframeModule,
     ComponentModule,
     AWPBModule,
+    SurveyModule,
     MprModule,
   ],
   providers: [

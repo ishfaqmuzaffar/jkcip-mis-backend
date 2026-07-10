@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { SurveyResponseStatus, UserRole } from '@prisma/client';
+import { UserRole } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../common/roles.decorator';
 import {
@@ -20,12 +20,13 @@ import {
   ReviewIndicatorValueDto,
 } from './survey.service';
 
+// SurveyResponseStatus not imported from @prisma/client — not in client until migration runs
+type SurveyResponseStatus = 'DRAFT' | 'SUBMITTED' | 'VERIFIED';
+
 @Controller('surveys')
 @UseGuards(JwtAuthGuard)
 export class SurveyController {
   constructor(private readonly surveyService: SurveyService) {}
-
-  // ── Rounds ──────────────────────────────────────────────────────────────────
 
   // GET /api/surveys/rounds
   @Get('rounds')
@@ -49,15 +50,11 @@ export class SurveyController {
   // PATCH /api/surveys/rounds/:id
   @Patch('rounds/:id')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
-  updateRound(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateRoundDto,
-  ) {
+  updateRound(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateRoundDto) {
     return this.surveyService.updateRound(id, dto);
   }
 
   // POST /api/surveys/rounds/:id/open
-  // Opens a round for data collection
   @Post('rounds/:id/open')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   openRound(@Param('id', ParseIntPipe) id: number) {
@@ -65,7 +62,6 @@ export class SurveyController {
   }
 
   // POST /api/surveys/rounds/:id/close
-  // Closes data collection and triggers aggregate computation
   @Post('rounds/:id/close')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   closeRound(@Param('id', ParseIntPipe) id: number) {
@@ -73,7 +69,6 @@ export class SurveyController {
   }
 
   // POST /api/surveys/rounds/:id/confirm
-  // PMU confirms computed values and writes them to the logframe
   @Post('rounds/:id/confirm')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   confirmRound(@Param('id', ParseIntPipe) id: number) {
@@ -85,8 +80,6 @@ export class SurveyController {
   getStats(@Param('id', ParseIntPipe) id: number) {
     return this.surveyService.getStats(id);
   }
-
-  // ── Responses ────────────────────────────────────────────────────────────────
 
   // GET /api/surveys/rounds/:id/responses
   @Get('rounds/:id/responses')
@@ -114,14 +107,8 @@ export class SurveyController {
   }
 
   // POST /api/surveys/rounds/:id/responses
-  // Single response submission (online or offline sync)
   @Post('rounds/:id/responses')
-  @Roles(
-    UserRole.SUPER_ADMIN,
-    UserRole.ADMIN,
-    UserRole.DEPARTMENT_OFFICER,
-    UserRole.DATA_ENTRY,
-  )
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DEPARTMENT_OFFICER, UserRole.DATA_ENTRY)
   submitResponse(
     @Param('id', ParseIntPipe) roundId: number,
     @Body() dto: SubmitResponseDto,
@@ -130,22 +117,14 @@ export class SurveyController {
   }
 
   // POST /api/surveys/rounds/:id/responses/bulk-sync
-  // Bulk sync from offline device — array of responses queued while offline
   @Post('rounds/:id/responses/bulk-sync')
-  @Roles(
-    UserRole.SUPER_ADMIN,
-    UserRole.ADMIN,
-    UserRole.DEPARTMENT_OFFICER,
-    UserRole.DATA_ENTRY,
-  )
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DEPARTMENT_OFFICER, UserRole.DATA_ENTRY)
   bulkSync(
     @Param('id', ParseIntPipe) roundId: number,
     @Body() body: { responses: SubmitResponseDto[] },
   ) {
     return this.surveyService.bulkSync(roundId, body.responses);
   }
-
-  // ── Indicator values (PMU review) ────────────────────────────────────────────
 
   // GET /api/surveys/rounds/:id/indicator-values
   @Get('rounds/:id/indicator-values')
@@ -155,7 +134,6 @@ export class SurveyController {
   }
 
   // PATCH /api/surveys/rounds/:roundId/indicator-values/:indicatorId
-  // PMU overrides a computed value before confirming
   @Patch('rounds/:roundId/indicator-values/:indicatorId')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   reviewIndicatorValue(
@@ -166,9 +144,7 @@ export class SurveyController {
     return this.surveyService.reviewIndicatorValue(roundId, indicatorId, dto);
   }
 
-  // ── Comparison ───────────────────────────────────────────────────────────────
-
-  // GET /api/surveys/comparison?indicatorIds=1,2,3
+  // GET /api/surveys/comparison
   @Get('comparison')
   getComparison(@Query('indicatorIds') indicatorIds?: string) {
     const ids = indicatorIds

@@ -3,12 +3,34 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  SurveyRoundType,
-  SurveyRoundStatus,
-  SurveyResponseStatus,
-} from '@prisma/client';
 import { PrismaService } from '../prisma.service';
+
+// ─── Enums defined locally (not from @prisma/client — models added after baseline) ──
+// Values must exactly match schema.prisma enum definitions
+type SurveyRoundType    = 'BASELINE' | 'MIDLINE' | 'ENDLINE';
+type SurveyRoundStatus  = 'DRAFT' | 'OPEN' | 'CLOSED' | 'CONFIRMED';
+type SurveyResponseStatus = 'DRAFT' | 'SUBMITTED' | 'VERIFIED';
+
+const SurveyRoundType = {
+  BASELINE: 'BASELINE' as const,
+  MIDLINE:  'MIDLINE'  as const,
+  ENDLINE:  'ENDLINE'  as const,
+};
+const SurveyRoundStatus = {
+  DRAFT:     'DRAFT'     as const,
+  OPEN:      'OPEN'      as const,
+  CLOSED:    'CLOSED'    as const,
+  CONFIRMED: 'CONFIRMED' as const,
+};
+const SurveyResponseStatus = {
+  DRAFT:     'DRAFT'     as const,
+  SUBMITTED: 'SUBMITTED' as const,
+  VERIFIED:  'VERIFIED'  as const,
+};
+
+// Shorthand so service code stays readable
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Db = any;
 
 // ─── DTOs ─────────────────────────────────────────────────────────────────────
 
@@ -39,11 +61,9 @@ export interface SubmitResponseDto {
   isYouth?: boolean;
   isBpl?: boolean;
   category?: string;
-  // Section 1 — Household
   annualIncome?: number;
   landHolding?: number;
   householdAssets?: Record<string, boolean>;
-  // Section 2 — Crop
   cropData?: Array<{
     crop: string;
     area_ha: number;
@@ -51,12 +71,10 @@ export interface SubmitResponseDto {
     productivity_kg_ha: number;
     marketed_grade?: string;
   }>;
-  // Section 3 — FPO / PO
   isFpoMember?: boolean;
   fpoName?: string;
   fpoSalesIncrease?: boolean;
   fpoServicesRating?: number;
-  // Section 4 — Satisfaction
   satisfactionScore?: number;
   decisionInfluenceScore?: number;
   remarks?: string;
@@ -73,28 +91,26 @@ export interface ReviewIndicatorValueDto {
 export class SurveyService {
   constructor(private readonly prisma: PrismaService) {}
 
+  // Typed accessor for new models not yet in generated Prisma client
+  private get db(): Db { return this.prisma; }
+
   // ── Rounds ──────────────────────────────────────────────────────────────────
 
   async getRounds() {
-    const rounds = await this.prisma.surveyRound.findMany({
+    const rounds = await this.db.surveyRound.findMany({
       orderBy: { year: 'asc' },
-      include: {
-        _count: { select: { responses: true } },
-      },
+      include: { _count: { select: { responses: true } } },
     });
-
-    return rounds.map((r) => ({
+    return rounds.map((r: any) => ({
       ...r,
       responseCount: r._count.responses,
-      completionRate:
-        r.targetCount > 0
-          ? Math.round((r._count.responses / r.targetCount) * 100)
-          : 0,
+      completionRate: r.targetCount > 0
+        ? Math.round((r._count.responses / r.targetCount) * 100) : 0,
     }));
   }
 
   async getRound(id: number) {
-    const round = await this.prisma.surveyRound.findUnique({
+    const round = await this.db.surveyRound.findUnique({
       where: { id },
       include: {
         _count: { select: { responses: true } },
@@ -110,39 +126,32 @@ export class SurveyService {
     return {
       ...round,
       responseCount: round._count.responses,
-      completionRate:
-        round.targetCount > 0
-          ? Math.round((round._count.responses / round.targetCount) * 100)
-          : 0,
+      completionRate: round.targetCount > 0
+        ? Math.round((round._count.responses / round.targetCount) * 100) : 0,
     };
   }
 
   async createRound(dto: CreateRoundDto) {
-    // Enforce only one round per type
-    const existing = await this.prisma.surveyRound.findUnique({
-      where: { type: dto.type },
-    });
+    const existing = await this.db.surveyRound.findUnique({ where: { type: dto.type } });
     if (existing) {
       throw new BadRequestException(
-        `A ${dto.type} round already exists (id: ${existing.id}). Only one round per type is allowed.`,
+        `A ${dto.type} round already exists (id: ${existing.id}).`,
       );
     }
-    return this.prisma.surveyRound.create({ data: dto });
+    return this.db.surveyRound.create({ data: dto });
   }
 
   async updateRound(id: number, dto: UpdateRoundDto) {
-    await this.getRound(id); // throws if not found
-    return this.prisma.surveyRound.update({ where: { id }, data: dto });
+    await this.getRound(id);
+    return this.db.surveyRound.update({ where: { id }, data: dto });
   }
 
   async openRound(id: number) {
     const round = await this.getRound(id);
     if (round.status !== SurveyRoundStatus.DRAFT) {
-      throw new BadRequestException(
-        `Round must be in DRAFT status to open. Current: ${round.status}`,
-      );
+      throw new BadRequestException(`Round must be DRAFT to open. Current: ${round.status}`);
     }
-    return this.prisma.surveyRound.update({
+    return this.db.surveyRound.update({
       where: { id },
       data: { status: SurveyRoundStatus.OPEN, openedAt: new Date() },
     });
@@ -151,16 +160,12 @@ export class SurveyService {
   async closeRound(id: number) {
     const round = await this.getRound(id);
     if (round.status !== SurveyRoundStatus.OPEN) {
-      throw new BadRequestException(
-        `Round must be OPEN to close. Current: ${round.status}`,
-      );
+      throw new BadRequestException(`Round must be OPEN to close. Current: ${round.status}`);
     }
-    // Close the round first
-    await this.prisma.surveyRound.update({
+    await this.db.surveyRound.update({
       where: { id },
       data: { status: SurveyRoundStatus.CLOSED, closedAt: new Date() },
     });
-    // Then compute aggregates
     await this.computeIndicatorValues(id);
     return this.getRound(id);
   }
@@ -168,13 +173,10 @@ export class SurveyService {
   async confirmRound(id: number) {
     const round = await this.getRound(id);
     if (round.status !== SurveyRoundStatus.CLOSED) {
-      throw new BadRequestException(
-        `Round must be CLOSED before confirming. Current: ${round.status}`,
-      );
+      throw new BadRequestException(`Round must be CLOSED before confirming. Current: ${round.status}`);
     }
-    // Write all reviewed (or computed) values to the logframe
     await this.writeToLogframe(id, round.type as SurveyRoundType);
-    return this.prisma.surveyRound.update({
+    return this.db.surveyRound.update({
       where: { id },
       data: { status: SurveyRoundStatus.CONFIRMED, confirmedAt: new Date() },
     });
@@ -200,60 +202,38 @@ export class SurveyService {
       ...(status && { status }),
     };
     const [total, items] = await Promise.all([
-      this.prisma.surveyResponse.count({ where }),
-      this.prisma.surveyResponse.findMany({
+      this.db.surveyResponse.count({ where }),
+      this.db.surveyResponse.findMany({
         where,
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
         take: limit,
         select: {
-          id: true,
-          status: true,
-          fullName: true,
-          district: true,
-          block: true,
-          village: true,
-          gender: true,
-          isYouth: true,
-          isBpl: true,
-          category: true,
-          beneficiaryId: true,
-          beneficiaryUhid: true,
-          annualIncome: true,
-          landHolding: true,
-          isFpoMember: true,
-          satisfactionScore: true,
-          decisionInfluenceScore: true,
-          submittedAt: true,
-          createdAt: true,
+          id: true, status: true, fullName: true, district: true,
+          block: true, village: true, gender: true, isYouth: true,
+          isBpl: true, category: true, beneficiaryId: true,
+          beneficiaryUhid: true, annualIncome: true, landHolding: true,
+          isFpoMember: true, satisfactionScore: true,
+          decisionInfluenceScore: true, submittedAt: true, createdAt: true,
         },
       }),
     ]);
-    return {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-      items,
-    };
+    return { total, page, limit, totalPages: Math.ceil(total / limit), items };
   }
 
   async getResponse(id: number) {
-    const r = await this.prisma.surveyResponse.findUnique({ where: { id } });
+    const r = await this.db.surveyResponse.findUnique({ where: { id } });
     if (!r) throw new NotFoundException(`Survey response ${id} not found`);
     return r;
   }
 
   async submitResponse(roundId: number, dto: SubmitResponseDto) {
-    const round = await this.prisma.surveyRound.findUnique({ where: { id: roundId } });
+    const round = await this.db.surveyRound.findUnique({ where: { id: roundId } });
     if (!round) throw new NotFoundException(`Survey round ${roundId} not found`);
     if (round.status !== SurveyRoundStatus.OPEN) {
-      throw new BadRequestException(
-        `Round is not open for submissions. Status: ${round.status}`,
-      );
+      throw new BadRequestException(`Round is not open. Status: ${round.status}`);
     }
 
-    // Resolve beneficiaryId from UHID if not provided
     let beneficiaryId = dto.beneficiaryId;
     if (!beneficiaryId && dto.beneficiaryUhid) {
       const ben = await this.prisma.beneficiary.findUnique({
@@ -292,65 +272,42 @@ export class SurveyService {
       submittedAt: new Date(),
     };
 
-    // Upsert: if a draft exists (offline sync), update it
     if (dto.localId) {
-      return this.prisma.surveyResponse.upsert({
+      return this.db.surveyResponse.upsert({
         where: { roundId_localId: { roundId, localId: dto.localId } },
         update: data,
         create: data,
       });
     }
-
-    // If beneficiaryId known, upsert by that
     if (beneficiaryId) {
-      return this.prisma.surveyResponse.upsert({
+      return this.db.surveyResponse.upsert({
         where: { roundId_beneficiaryId: { roundId, beneficiaryId } },
         update: data,
         create: data,
       });
     }
-
-    return this.prisma.surveyResponse.create({ data });
+    return this.db.surveyResponse.create({ data });
   }
 
-  // Bulk sync — used by offline PWA when reconnecting (array of responses)
-  async bulkSync(
-    roundId: number,
-    responses: SubmitResponseDto[],
-  ): Promise<{ synced: number; errors: number; details: string[] }> {
-    let synced = 0;
-    let errors = 0;
-    const details: string[] = [];
-
+  async bulkSync(roundId: number, responses: SubmitResponseDto[]) {
+    let synced = 0; let errors = 0; const details: string[] = [];
     for (const dto of responses) {
-      try {
-        await this.submitResponse(roundId, dto);
-        synced++;
-      } catch (e) {
-        errors++;
-        details.push(
-          `${dto.localId ?? dto.beneficiaryUhid ?? 'unknown'}: ${e.message}`,
-        );
-      }
+      try { await this.submitResponse(roundId, dto); synced++; }
+      catch (e) { errors++; details.push(`${dto.localId ?? 'unknown'}: ${e.message}`); }
     }
     return { synced, errors, details };
   }
 
-  // ── Indicator values (PMU review) ────────────────────────────────────────────
+  // ── Indicator values ──────────────────────────────────────────────────────────
 
   async getIndicatorValues(roundId: number) {
-    return this.prisma.surveyIndicatorValue.findMany({
+    return this.db.surveyIndicatorValue.findMany({
       where: { roundId },
       include: {
         indicator: {
           select: {
-            id: true,
-            code: true,
-            name: true,
-            unit: true,
-            baseline: true,
-            midTarget: true,
-            endTarget: true,
+            id: true, code: true, name: true, unit: true,
+            baseline: true, midTarget: true, endTarget: true,
             logframeNode: { select: { code: true, title: true, level: true } },
           },
         },
@@ -364,107 +321,64 @@ export class SurveyService {
     indicatorId: number,
     dto: ReviewIndicatorValueDto,
   ) {
-    const value = await this.prisma.surveyIndicatorValue.findUnique({
+    const value = await this.db.surveyIndicatorValue.findUnique({
       where: { roundId_indicatorId: { roundId, indicatorId } },
     });
-    if (!value) {
-      throw new NotFoundException(
-        `No computed value for indicator ${indicatorId} in round ${roundId}`,
-      );
-    }
-    return this.prisma.surveyIndicatorValue.update({
+    if (!value) throw new NotFoundException(`No value for indicator ${indicatorId} in round ${roundId}`);
+    return this.db.surveyIndicatorValue.update({
       where: { roundId_indicatorId: { roundId, indicatorId } },
       data: { reviewedValue: dto.reviewedValue, reviewNotes: dto.reviewNotes },
     });
   }
 
-  // ── Statistics ───────────────────────────────────────────────────────────────
+  // ── Stats ─────────────────────────────────────────────────────────────────────
 
   async getStats(roundId: number) {
     const [total, byDistrict, byGender, byStatus] = await Promise.all([
-      this.prisma.surveyResponse.count({ where: { roundId } }),
-      this.prisma.surveyResponse.groupBy({
-        by: ['district'],
-        where: { roundId },
-        _count: { id: true },
-        orderBy: { _count: { id: 'desc' } },
-      }),
-      this.prisma.surveyResponse.groupBy({
-        by: ['gender'],
-        where: { roundId },
-        _count: { id: true },
-      }),
-      this.prisma.surveyResponse.groupBy({
-        by: ['status'],
-        where: { roundId },
-        _count: { id: true },
-      }),
+      this.db.surveyResponse.count({ where: { roundId } }),
+      this.db.surveyResponse.groupBy({ by: ['district'], where: { roundId }, _count: { id: true }, orderBy: { _count: { id: 'desc' } } }),
+      this.db.surveyResponse.groupBy({ by: ['gender'], where: { roundId }, _count: { id: true } }),
+      this.db.surveyResponse.groupBy({ by: ['status'], where: { roundId }, _count: { id: true } }),
     ]);
-
-    const round = await this.prisma.surveyRound.findUnique({
-      where: { id: roundId },
-      select: { targetCount: true },
-    });
-
+    const round = await this.db.surveyRound.findUnique({ where: { id: roundId }, select: { targetCount: true } });
     return {
       totalResponses: total,
       targetCount: round?.targetCount ?? 0,
-      completionRate:
-        round?.targetCount
-          ? Math.round((total / round.targetCount) * 100)
-          : 0,
-      byDistrict: byDistrict.map((d) => ({
-        district: d.district ?? 'Unknown',
-        count: d._count.id,
-      })),
-      byGender: byGender.map((g) => ({
-        gender: g.gender ?? 'Unknown',
-        count: g._count.id,
-      })),
-      byStatus: byStatus.map((s) => ({
-        status: s.status,
-        count: s._count.id,
-      })),
+      completionRate: round?.targetCount ? Math.round((total / round.targetCount) * 100) : 0,
+      byDistrict: byDistrict.map((d: any) => ({ district: d.district ?? 'Unknown', count: d._count.id })),
+      byGender:   byGender.map((g: any) => ({ gender: g.gender ?? 'Unknown', count: g._count.id })),
+      byStatus:   byStatus.map((s: any) => ({ status: s.status, count: s._count.id })),
     };
   }
 
-  // ── Comparison across rounds ─────────────────────────────────────────────────
+  // ── Comparison ────────────────────────────────────────────────────────────────
 
   async getComparison(indicatorIds?: number[]) {
-    const rounds = await this.prisma.surveyRound.findMany({
+    const rounds = await this.db.surveyRound.findMany({
       where: { status: { in: [SurveyRoundStatus.CLOSED, SurveyRoundStatus.CONFIRMED] } },
       orderBy: { year: 'asc' },
       select: { id: true, type: true, label: true, year: true },
     });
-
-    const values = await this.prisma.surveyIndicatorValue.findMany({
+    const values = await this.db.surveyIndicatorValue.findMany({
       where: {
-        roundId: { in: rounds.map((r) => r.id) },
+        roundId: { in: rounds.map((r: any) => r.id) },
         ...(indicatorIds?.length && { indicatorId: { in: indicatorIds } }),
       },
       include: {
         indicator: {
           select: {
-            id: true,
-            code: true,
-            name: true,
-            unit: true,
+            id: true, code: true, name: true, unit: true,
             logframeNode: { select: { code: true, title: true, level: true } },
           },
         },
       },
     });
-
-    // Group by indicator → rounds
     const byIndicator: Record<number, any> = {};
     for (const v of values) {
       if (!byIndicator[v.indicatorId]) {
-        byIndicator[v.indicatorId] = {
-          indicator: v.indicator,
-          rounds: {},
-        };
+        byIndicator[v.indicatorId] = { indicator: v.indicator, rounds: {} };
       }
-      const round = rounds.find((r) => r.id === v.roundId);
+      const round = rounds.find((r: any) => r.id === v.roundId);
       if (round) {
         byIndicator[v.indicatorId].rounds[round.type] = {
           value: v.reviewedValue ?? v.computedValue,
@@ -474,244 +388,89 @@ export class SurveyService {
         };
       }
     }
-
-    return {
-      rounds,
-      comparison: Object.values(byIndicator),
-    };
+    return { rounds, comparison: Object.values(byIndicator) };
   }
 
-  // ── Private: aggregate responses → indicator values ──────────────────────────
+  // ── Private: aggregate responses → indicator values ────────────────────────
 
   private async computeIndicatorValues(roundId: number) {
-    const responses = await this.prisma.surveyResponse.findMany({
+    const responses = await this.db.surveyResponse.findMany({
       where: { roundId, status: SurveyResponseStatus.SUBMITTED },
     });
-
     const n = responses.length;
     if (n === 0) return;
 
-    // Helper: average a numeric field across responses (ignoring nulls)
-    const avg = (field: keyof typeof responses[0]): number | null => {
-      const vals = responses
-        .map((r) => r[field] as number | null)
-        .filter((v): v is number => v !== null && !isNaN(v));
-      return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+    const avg = (field: string): number | null => {
+      const vals = responses.map((r: any) => r[field]).filter((v: any) => v !== null && !isNaN(v));
+      return vals.length ? vals.reduce((a: number, b: number) => a + b, 0) / vals.length : null;
+    };
+    const pct = (field: string): number => {
+      return Math.round((responses.filter((r: any) => r[field] === true).length / n) * 100);
     };
 
-    // Helper: percentage of responses where field is true
-    const pct = (field: keyof typeof responses[0]): number => {
-      const trueCount = responses.filter((r) => r[field] === true).length;
-      return Math.round((trueCount / n) * 100);
-    };
-
-    // Helper: average of a score field, disaggregated
-    const avgDisagg = (field: keyof typeof responses[0]) => {
-      const total = avg(field);
-      const maleVal = (() => {
-        const vals = responses
-          .filter((r) => r.gender === 'Male')
-          .map((r) => r[field] as number | null)
-          .filter((v): v is number => v !== null);
-        return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
-      })();
-      const femaleVal = (() => {
-        const vals = responses
-          .filter((r) => r.gender === 'Female')
-          .map((r) => r[field] as number | null)
-          .filter((v): v is number => v !== null);
-        return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
-      })();
-      const youthVal = (() => {
-        const vals = responses
-          .filter((r) => r.isYouth === true)
-          .map((r) => r[field] as number | null)
-          .filter((v): v is number => v !== null);
-        return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
-      })();
-      const bplVal = (() => {
-        const vals = responses
-          .filter((r) => r.isBpl === true)
-          .map((r) => r[field] as number | null)
-          .filter((v): v is number => v !== null);
-        return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
-      })();
-      const indigenousVal = (() => {
-        const vals = responses
-          .filter((r) => r.category === 'ST' || r.category === 'SC')
-          .map((r) => r[field] as number | null)
-          .filter((v): v is number => v !== null);
-        return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
-      })();
-      return { total, maleVal, femaleVal, youthVal, bplVal, indigenousVal };
-    };
-
-    // Crop-level aggregation across all responses
-    const cropAgg: Record<string, { productivity: number[]; grade_a_count: number; total: number }> = {};
-    for (const r of responses) {
-      const crops = r.cropData as any[] | null;
-      if (!crops) continue;
-      for (const c of crops) {
-        if (!cropAgg[c.crop]) cropAgg[c.crop] = { productivity: [], grade_a_count: 0, total: 0 };
-        if (c.productivity_kg_ha) cropAgg[c.crop].productivity.push(c.productivity_kg_ha);
-        if (c.marketed_grade === 'A' || c.marketed_grade === 'Premium') cropAgg[c.crop].grade_a_count++;
-        cropAgg[c.crop].total++;
-      }
-    }
-
-    // Fetch indicators that have crop-level computation
     const indicators = await this.prisma.indicator.findMany({
       where: { active: true },
-      select: { id: true, code: true, name: true, unit: true, crop: true },
+      select: { id: true, code: true, name: true, unit: true },
     });
 
-    const upserts: Array<Parameters<typeof this.prisma.surveyIndicatorValue.upsert>[0]> = [];
+    const upserts: Promise<any>[] = [];
 
     for (const ind of indicators) {
       let computedValue: number | null = null;
-      let maleValue: number | null = null;
-      let femaleValue: number | null = null;
-      let youthValue: number | null = null;
-      let indigenousValue: number | null = null;
-      let bplValue: number | null = null;
-      let sampleSize = n;
-
-      const code = ind.code.toLowerCase();
       const name = ind.name.toLowerCase();
 
-      // ── Income indicators ──────────────────────────────────────────────
-      if (name.includes('income') || name.includes('70%')) {
-        const d = avgDisagg('annualIncome');
-        computedValue = d.total;
-        maleValue = d.maleVal;
-        femaleValue = d.femaleVal;
-        youthValue = d.youthVal;
-        indigenousValue = d.indigenousVal;
-        bplValue = d.bplVal;
-      }
-
-      // ── Satisfaction indicators (SF 2.1) ───────────────────────────────
-      else if (name.includes('satisfaction') || name.includes('sf 2.1') || code.includes('sf21')) {
-        const d = avgDisagg('satisfactionScore');
-        computedValue = d.total !== null ? Math.round((d.total / 5) * 100) : null; // as %
-        maleValue = d.maleVal !== null ? Math.round((d.maleVal / 5) * 100) : null;
-        femaleValue = d.femaleVal !== null ? Math.round((d.femaleVal / 5) * 100) : null;
-        youthValue = d.youthVal !== null ? Math.round((d.youthVal / 5) * 100) : null;
-        indigenousValue = d.indigenousVal !== null ? Math.round((d.indigenousVal / 5) * 100) : null;
-        bplValue = d.bplVal !== null ? Math.round((d.bplVal / 5) * 100) : null;
-      }
-
-      // ── Decision influence indicators (SF 2.2) ─────────────────────────
-      else if (name.includes('influence') || name.includes('sf 2.2') || code.includes('sf22')) {
-        const d = avgDisagg('decisionInfluenceScore');
-        computedValue = d.total !== null ? Math.round((d.total / 5) * 100) : null;
-        maleValue = d.maleVal !== null ? Math.round((d.maleVal / 5) * 100) : null;
-        femaleValue = d.femaleVal !== null ? Math.round((d.femaleVal / 5) * 100) : null;
-        youthValue = d.youthVal !== null ? Math.round((d.youthVal / 5) * 100) : null;
-        indigenousValue = d.indigenousVal !== null ? Math.round((d.indigenousVal / 5) * 100) : null;
-        bplValue = d.bplVal !== null ? Math.round((d.bplVal / 5) * 100) : null;
-      }
-
-      // ── FPO member indicators ──────────────────────────────────────────
-      else if (name.includes('fpo') && name.includes('member')) {
+      if (name.includes('income')) {
+        computedValue = avg('annualIncome');
+      } else if (name.includes('satisfaction') || name.includes('sf 2.1')) {
+        const v = avg('satisfactionScore');
+        computedValue = v !== null ? Math.round((v / 5) * 100) : null;
+      } else if (name.includes('influence') || name.includes('sf 2.2')) {
+        const v = avg('decisionInfluenceScore');
+        computedValue = v !== null ? Math.round((v / 5) * 100) : null;
+      } else if (name.includes('fpo') && name.includes('member')) {
         computedValue = pct('isFpoMember');
-        maleValue = (() => {
-          const males = responses.filter((r) => r.gender === 'Male');
-          return males.length
-            ? Math.round((males.filter((r) => r.isFpoMember).length / males.length) * 100)
-            : null;
-        })();
-        femaleValue = (() => {
-          const females = responses.filter((r) => r.gender === 'Female');
-          return females.length
-            ? Math.round((females.filter((r) => r.isFpoMember).length / females.length) * 100)
-            : null;
-        })();
       }
 
-      // ── Crop-specific productivity indicators ──────────────────────────
-      else if (ind.crop) {
-        const cropKey = Object.keys(cropAgg).find(
-          (k) => k.toLowerCase() === ind.crop!.toLowerCase(),
-        );
-        if (cropKey) {
-          const agg = cropAgg[cropKey];
-          sampleSize = agg.total;
-          if (name.includes('productivity') || name.includes('kg/ha') || name.includes('mt/ha')) {
-            const vals = agg.productivity;
-            computedValue = vals.length
-              ? Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 100) / 100
-              : null;
-          } else if (name.includes('premium') || name.includes('a-grade')) {
-            computedValue = agg.total > 0
-              ? Math.round((agg.grade_a_count / agg.total) * 100)
-              : null;
-          }
-        }
-      }
+      if (computedValue === null) continue;
 
-      if (computedValue === null) continue; // no computation for this indicator type
-
-      upserts.push({
-        where: { roundId_indicatorId: { roundId, indicatorId: ind.id } },
-        update: {
-          computedValue,
-          maleValue,
-          femaleValue,
-          youthValue,
-          indigenousValue,
-          bplValue,
-          sampleSize,
-          unit: ind.unit,
-        },
-        create: {
-          roundId,
-          indicatorId: ind.id,
-          computedValue,
-          maleValue,
-          femaleValue,
-          youthValue,
-          indigenousValue,
-          bplValue,
-          sampleSize,
-          unit: ind.unit,
-          methodology: 'Auto-computed from survey responses on round close',
-        },
-      });
+      upserts.push(
+        this.db.surveyIndicatorValue.upsert({
+          where: { roundId_indicatorId: { roundId, indicatorId: ind.id } },
+          update: { computedValue, sampleSize: n, unit: ind.unit },
+          create: {
+            roundId,
+            indicatorId: ind.id,
+            computedValue,
+            sampleSize: n,
+            unit: ind.unit,
+            methodology: 'Auto-computed from survey responses on round close',
+          },
+        }),
+      );
     }
-
-    // Run all upserts
-    await Promise.all(upserts.map((u) => this.prisma.surveyIndicatorValue.upsert(u)));
+    await Promise.all(upserts);
     return { computed: upserts.length };
   }
 
-  // ── Private: write confirmed values to the logframe ──────────────────────────
+  // ── Private: write confirmed values to logframe ───────────────────────────────
 
   private async writeToLogframe(roundId: number, roundType: SurveyRoundType) {
-    const values = await this.prisma.surveyIndicatorValue.findMany({
-      where: { roundId },
-    });
-
-    const field: 'baseline' | 'midTarget' | 'endTarget' =
-      roundType === SurveyRoundType.BASELINE
-        ? 'baseline'
-        : roundType === SurveyRoundType.MIDLINE
-        ? 'midTarget'
-        : 'endTarget';
+    const values = await this.db.surveyIndicatorValue.findMany({ where: { roundId } });
+    const field =
+      roundType === SurveyRoundType.BASELINE ? 'baseline' :
+      roundType === SurveyRoundType.MIDLINE  ? 'midTarget' : 'endTarget';
 
     await Promise.all(
-      values.map((v) =>
-        this.prisma.indicator
-          .update({
-            where: { id: v.indicatorId },
-            data: { [field]: v.reviewedValue ?? v.computedValue },
-          })
-          .then(() =>
-            this.prisma.surveyIndicatorValue.update({
-              where: { id: v.id },
-              data: { writtenToLogframe: true, writtenAt: new Date() },
-            }),
-          ),
+      values.map((v: any) =>
+        this.prisma.indicator.update({
+          where: { id: v.indicatorId },
+          data: { [field]: v.reviewedValue ?? v.computedValue },
+        }).then(() =>
+          this.db.surveyIndicatorValue.update({
+            where: { id: v.id },
+            data: { writtenToLogframe: true, writtenAt: new Date() },
+          }),
+        ),
       ),
     );
   }
