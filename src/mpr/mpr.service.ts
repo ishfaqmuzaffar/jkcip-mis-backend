@@ -163,7 +163,7 @@ export class MprService {
 
       if (existing && existing.annualResult !== null && existing.annualResult !== value) {
         // Conflict — existing value differs from MPR value
-        const activityName = (row[1] ?? activityCode).trim();
+        const activityName = (row[2] ?? activityCode).trim();
         await this.prisma.mprConflict.create({
           data: {
             department: deptCode,
@@ -344,28 +344,37 @@ export class MprService {
     });
   }
 
-  // ── Simple CSV parser (handles quoted fields) ─────────────────────────────────
+  // ── CSV parser (handles quoted fields, including embedded newlines) ───────────
   private parseCSV(text: string): string[][] {
     const rows: string[][] = [];
-    const lines = text.split(/\r?\n/);
-    for (const line of lines) {
-      if (!line.trim()) continue;
-      const row: string[] = [];
-      let inQuote = false;
-      let cell = '';
-      for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
+    let row: string[] = [];
+    let cell = '';
+    let inQuote = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (inQuote) {
         if (ch === '"') {
-          if (inQuote && line[i + 1] === '"') { cell += '"'; i++; }
-          else inQuote = !inQuote;
-        } else if (ch === ',' && !inQuote) {
-          row.push(cell); cell = '';
+          if (text[i + 1] === '"') { cell += '"'; i++; }
+          else inQuote = false;
         } else {
           cell += ch;
         }
+      } else if (ch === '"') {
+        inQuote = true;
+      } else if (ch === ',') {
+        row.push(cell); cell = '';
+      } else if (ch === '\n' || ch === '\r') {
+        if (ch === '\r' && text[i + 1] === '\n') i++;
+        row.push(cell); cell = '';
+        if (row.some((c) => c.trim() !== '')) rows.push(row);
+        row = [];
+      } else {
+        cell += ch;
       }
+    }
+    if (cell !== '' || row.length) {
       row.push(cell);
-      rows.push(row);
+      if (row.some((c) => c.trim() !== '')) rows.push(row);
     }
     return rows;
   }

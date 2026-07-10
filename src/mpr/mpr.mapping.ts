@@ -1,18 +1,19 @@
 // mpr.mapping.ts
-// Maps MPR activity codes (column A of Google Sheets) to MIS indicator codes.
+// Maps MPR activity codes (column B of Google Sheets) to MIS indicator codes.
 // Each entry: activityCode → { indicatorCode, valueColumn, unit, notes }
 //
-// Google Sheet column structure (from screenshot):
-//   Col A  = Code
-//   Col B  = Component / activity
-//   Col C  = Unit
-//   Col D  = Unit cost
-//   Col E  = Total project target (Physical)
-//   Col F  = Total project target (Financial Rs'000)
-//   Col G  = AWPB Physical target
-//   Col H  = AWPB Financial
-//   Col I  = 2025-26 Phy. Target
-//   Col J  = 2025-26 Fin. Target
+// Google Sheet column structure (verified against the actual CSV export):
+//   Col A  = (blank spacer column)
+//   Col B  = Code
+//   Col C  = Component / activity
+//   Col D  = Unit
+//   Col E  = Unit cost
+//   Col F  = Total project target (Physical)
+//   Col G  = Total project target (Financial Rs'000)
+//   Col H  = AWPB Physical target
+//   Col I  = AWPB Financial
+//   Col J  = 2025-26 Phy. Target
+//   Col K  = 2025-26 Fin. Target
 //   Col L  = Physical Achievement Completed  ← THIS IS THE VALUE WE IMPORT
 //   Col M  = % Phy. Achievement
 
@@ -166,7 +167,7 @@ export const DEPARTMENTS: Record<string, DepartmentConfig> = {
     tabs: ['Nov - 2025', 'Oct - 2025', 'Sep - 2025', 'Aug - 2025', 'Jul - 2025', 'Jun - 2025',
            'Mar - 2025', 'Feb - 2025', 'Jan - 2025', 'Dec - 2024'],
     valueColumnIndex: 11,  // Column L
-    codeColumnIndex: 0,    // Column A
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   DAK: {
     name: 'Department of Agriculture Kashmir',
@@ -174,84 +175,84 @@ export const DEPARTMENTS: Record<string, DepartmentConfig> = {
     tabs: ['Nov - 2025', 'Oct - 2025', 'Sep - 2025', 'Aug - 2025', 'Jul - 2025', 'Jun - 2025',
            'Mar - 2025', 'Feb - 2025', 'Jan - 2025', 'Dec - 2024'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   DHJ: {
     name: 'Department of Horticulture Jammu',
     sheetId: '1emy5CFCGoKRdLhEYFO3eas1jNYL_RrbP8XqV8hpEjSw',
     tabs: ['Nov - 2025', 'Oct - 2025', 'Sep - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   DHK: {
     name: 'Department of Horticulture Kashmir',
     sheetId: '117MbwvtQAponMy1N08XjgV7K4zOgehmbEZrIGkKn4ac',
     tabs: ['Nov - 2025', 'Oct - 2025', 'Sep - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   SHDK: {
     name: 'Department of Sheep Husbandry Kashmir',
     sheetId: '1A41Vzysit86H00TQ-bj6mqBS4CXHMucEmepQBEmbfzo',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   SHDJ: {
     name: 'Department of Sheep Husbandry Jammu',
     sheetId: '1UUC_Y-gVT-8bdWcy2gfG4PtFylmSn4fFzWdHwHUl3lM',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   HPM: {
     name: 'Horticulture Planning & Marketing',
     sheetId: '1KcvHCyTpjJYH5vbcYyoPY2FoRnRs7_8bJVMDVMwdGa4',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   FJK: {
     name: 'Fisheries J&K',
     sheetId: '1ZltwN5RJeTgvcZv9BQGawx4kuckcGSnILY4yNpjhTm0',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   AHDK: {
     name: 'Animal Husbandry Kashmir',
     sheetId: '10sm_cZ2xXBTmseyWd8MfuEiThEepBq2RsfIaCTlEQSw',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   AHDJ: {
     name: 'Animal Husbandry Jammu',
     sheetId: '1IupdX5EPGo9tYo2U7-Mxn4-bp0zoyIUuNCIciQVBfwU',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   SKUASTK: {
     name: 'SKUAST Kashmir',
     sheetId: '1L7ypfqIKsU45CAGa15jTyWxteNbkyUcy5L0nZe7My_o',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   SKUASTJ: {
     name: 'SKUAST Jammu',
     sheetId: '1PLjQE5QdiZcSAj-eH153MLP34duqt_UQSPeLJrFOyEE',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
   PMU: {
     name: 'Project Management Unit',
     sheetId: '1DHhgnTSAyLvhVsCs9-iu9CJh6eLCKzVc8jVWPxcOd8o',
     tabs: ['Nov - 2025', 'Oct - 2025'],
     valueColumnIndex: 11,
-    codeColumnIndex: 0,
+    codeColumnIndex: 1, // col A is a blank spacer column; the activity code is in col B
   },
 };
 
