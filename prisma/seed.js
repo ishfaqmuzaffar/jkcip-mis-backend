@@ -165,7 +165,6 @@ async function main() {
   const oc3 = await node({ title: 'Outcome 3: Improved price realization of Agri and allied sector produce', code: 'OC-3', level: 'OUTCOME', order: 11 });
   await ind({ code: 'OC3-FGP',  name: '% of farmers reporting increase in farm gate prices',       unit: '%', midTarget: 30, endTarget: 70, source: MIS_SURVEY, responsibility: PMU_EXT, nodeId: oc3.id });
   await ind({ code: 'OC3-222',  name: '2.2.2 Rural enterprises reporting increase in profit (%)',  unit: '%', midTarget: 30, endTarget: 70, source: MIS_SURVEY, responsibility: PMU_EXT, nodeId: oc3.id });
-  await ind({ code: 'OC3-MKT',  name: '% of enterprises with improved market linkages',            unit: '%', midTarget: 30, endTarget: 70, source: MIS_SURVEY, responsibility: PMU_EXT, nodeId: oc3.id });
   await ind({ code: 'OC3-YUTH', name: '% of start-ups supported with youth ownership',             unit: '%', midTarget: 30, endTarget: 60, source: MIS_SURVEY, responsibility: PMU_EXT, youth: true, nodeId: oc3.id });
   const op31 = await node({ title: 'Output 3.1: Enterprise promotion', code: 'OP-3.1', level: 'OUTPUT', order: 12, parentId: oc3.id });
   await ind({ code: 'OP31-ENT',   name: 'Number of enterprises supported',                              unit: 'Number', midTarget: 602, endTarget: 1204, source: MIS, frequency: MONTHLY, nodeId: op31.id });
